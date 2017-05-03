@@ -19,7 +19,7 @@ public interface FightCharService extends CharacterService{
 	int getHstunFrameCounter();
 	FightCharService getOtherFightChar();
 	// pre: isInHitFrame()
-	HitboxService getTechBox();
+	RectangleHitboxService getTechBox();
 	int nbTechMastered();
 	// pre: i \in [1,nbTechMastered()]
 	Tech getTechMastered(int i);

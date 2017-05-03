@@ -1,19 +1,19 @@
 package impl;
 
-import javafx.scene.Parent;
-import javafx.scene.control.ProgressBar;
 import services.CharacterService;
 import services.Commande;
 import services.EngineService;
 import services.GlobalVariables;
 import services.HitboxService;
-import contracts.HitboxContract;
+import services.RectangleHitboxService;
 
 public class CharacterImpl implements CharacterService{
 	//private int positionX;
 	//private int positionY;
 	protected EngineService engine;
-	protected HitboxService charBox;
+	//protected HitboxService charBox;
+	protected RectangleHitboxService charBox;
+
 	protected int life = 0;
 	protected int maxLife = 0;//
 	protected int speed;
@@ -37,21 +37,22 @@ public class CharacterImpl implements CharacterService{
 		this.maxLife = l; //????
 		
 		//***UTILISATION DE HITBOX CONTRACT***//
-		HitboxImpl hb = new HitboxImpl();
-		hb.init(0, 0, 20, 20);
+		RectangleHitboxService hb = new RectangleHitboxImpl();
+		//hb.init(0, 0, 20, 20);
+		hb.init(0, 0);
 		//this.charBox = new HitboxContract(hb);
 		this.charBox = hb;
 	}
 	
 	@Override
-	public int getPositionX() {
+	public double getPositionX() {
 		return this.charBox.getPositionX();
 	}
 	/*ProgressBar getProgressBar(){ //---//
 		return this.pb;
 	}*/
 	@Override
-	public int getPositionY() {
+	public double getPositionY() {
 		//return this.charBox.getPositionY() - this.getEngine().getHeight();
 		return this.charBox.getPositionY();
 	}
@@ -73,7 +74,7 @@ public class CharacterImpl implements CharacterService{
 	}
 
 	@Override
-	public HitboxService getCharBox() {
+	public RectangleHitboxService getCharBox() {
 		
 		return this.charBox;
 	}
@@ -107,9 +108,9 @@ public class CharacterImpl implements CharacterService{
 		//this.pb.setProgress(((float)l/(float)life));
 
 	}
-	public void moveTo(int x, int y){
+	public void moveTo(double d, double e){
 		//this.getCharBox().moveTo(x, y + this.getEngine().getHeight());
-		this.getCharBox().moveTo(x, y );
+		this.getCharBox().moveTo(d, e );
 
 	}
 
@@ -119,6 +120,8 @@ public class CharacterImpl implements CharacterService{
 
 		boolean collision = false;
 		for (int i = 0; i < GlobalVariables.nbPlayersMax; i++){
+			System.out.println("CHECK INSTANCE: "+ getEngine().getChar(i) + " and this: " + this);
+
 			if (getEngine().getChar(i) != this && getCharBox().isCollidesWith(getEngine().getChar(i).getCharBox()) ){
 				collision = true; 
 			}

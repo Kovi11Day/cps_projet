@@ -6,14 +6,13 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import services.HitboxService;
 
-public class HitboxImpl implements HitboxService{
-	int x; int y; int height; int width;
+public abstract class HitboxImpl implements HitboxService{
+	private double x;
+	private double y;
 	//Rectangle box;//
 	//Gui gui;
 	public HitboxImpl(){
 		//this.gui = gui;
-		this.x = 0; 
-		this.y = 0;
 		//this.box = new Rectangle();
 		//this.getChildren().add(box);
 
@@ -21,61 +20,50 @@ public class HitboxImpl implements HitboxService{
 		//box.setHeight(125);
 		//Circle face = new Circle(10);
 		//face.setFill(Color.RED);
+		
 	}
-	public int getWidth() {
-		return this.width;
-	}
-	public int getHeight() {
-		return this.height;
-	}
+
 	@Override
-	public int getPositionX() {
-		// TODO Auto-generated method stub
+	public double getPositionX() {
+		
 		return x;
 		//return (int) (x + (box.getWidth()/2));
 	}
 
 	@Override
-	public int getPositionY() {
-		// TODO Auto-generated method stub
+	public double getPositionY() {
+		
 		return y;
 		//return (int) (y-box.getHeight());
 	}
 
 	@Override
-	public boolean isBelongsTo(int x, int y) {
+	public boolean isBelongsTo(double x, double y) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean isCollidesWith(HitboxService h) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public abstract boolean isCollidesWith(HitboxService h);
 
 	@Override
-	public boolean isEqualsTo(HitboxService h) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public abstract boolean isEqualsTo(HitboxService h);
 
 	@Override
-	public void init(int x, int y, int w, int h) {
+	public void init(double x, double y) {
 		this.x=x;
 		this.y=y;
-		this.width= w;
-		this.height = h;
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
-	public void moveTo(int x, int y) {
+	public void moveTo(double x, double y) {
 		// TODO Auto-generated method stub
 		System.out.println("moveto callon: " + x + "," + y);
 		this.x = x; 
 		this.y = y;
+
 	//	box.setX(x); 
 		//box.setY(y);
 		/*this.x = (int) (x-(box.getWidth()/2));

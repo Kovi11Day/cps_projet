@@ -48,8 +48,8 @@ public class Game extends Application{
 		PlayerService player2 = new PlayerImpl();
 		//player1.init(contractChar1,"q","s","d");
 		//player2.init(contractChar2,"k","l","m");
-		player1.init(char1,"q","s","d","a","z","e","w","x","c","1","2","3");
-		player2.init(char2,"k","l","m","i","o","p",",",";",":","8","9","0");
+		player1.init(char1,"q","s","d","a","z","e","w","x","c","&","é","\"");
+		player2.init(char2,"k","l","m","i","o","p",",",";",":","!","ç","à");
 
 		//PlayerService contractPlayer1 = new PlayerContract(player1);
 		//PlayerService contractPlayer2 = new PlayerContract(player2);

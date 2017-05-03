@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import services.Commande;
 import services.FightCharService;
 import services.HitboxService;
+import services.RectangleHitboxService;
 import services.Tech;
 
 public class FightCharImpl  extends CharacterImpl implements FightCharService{
@@ -16,13 +17,14 @@ public class FightCharImpl  extends CharacterImpl implements FightCharService{
 	private int bstunFrameCounter;
 	private int hstunFrameCounter;
 	private FightCharService otherFightChar;
-	private HitboxService techBox;
+	private RectangleHitboxService techBox;
 	private ArrayList<Tech> techMastered;
 
 	public 	FightCharImpl(){
-		techBox = new HitboxImpl();
-		techBox.init(0, 0, 0, 0); 
-
+		techBox = new RectangleHitboxImpl();
+		//techBox.init(0, 0, 0, 0); 
+		techBox.init(0, 0); 
+		
 	}
 
 	@Override
@@ -110,7 +112,7 @@ public class FightCharImpl  extends CharacterImpl implements FightCharService{
 	}
 
 	@Override
-	public HitboxService getTechBox() {
+	public RectangleHitboxService getTechBox() {
 		
 		return this.techBox;
 	}
@@ -128,15 +130,18 @@ public class FightCharImpl  extends CharacterImpl implements FightCharService{
 	}
 	@Override
 	public void step(Commande c) {
+		if (this.isControllable()){
 		switch(c){
 		case LEFT: this.moveLeft(); break;
 		case RIGHT: this.moveRight(); break;
 		case COUP_DE_POING: 
-			System.out.println("isControllable=" + this.isControllable());
-			if (this.isControllable())
 				this.startTech(this.getTechMastered(1)); 
 			break;
+		}
+		}else{
+			System.out.println("isControllable = "+ this.isControllable());
 
+		
 		}
 		
 	}

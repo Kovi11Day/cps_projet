@@ -2,38 +2,35 @@ package services;
 
 public interface HitboxService {
 	/* Observators */
-	public int getPositionX();
-	public int getPositionY();
-	public boolean isBelongsTo(int x,int y);
+	public double getPositionX();
+	public double getPositionY();
+	public boolean isBelongsTo(double x,double y);
 	public boolean isCollidesWith(HitboxService h);
 	public boolean isEqualsTo(HitboxService h);
 	
-	//TODO:sortout 
-	public int getWidth();
-	public int getHeight();
-
 	/* Invariants */
 	
 	//inv :  collidesWith(HitboxService h) == 
-		// \exists x,y \in \int {isBelongsTo(x,y) && h.isBelongsTo(x,y)}
+		// \exists x,y:double {isBelongsTo(x,y) && h.isBelongsTo(x,y)}
 	
 	//inv :  equalsTo(HitboxService h) == 
-			// \forall x,y \in \int {isBelongsTo(x,y) == h.isBelongsTo(x,y)}
+			// \forall x,y:double \int {isBelongsTo(x,y) == h.isBelongsTo(x,y)}
 	
 	
 	/* Initializers */
 	
 	//post: getPostionX() = x
 	//post: getPostionY() =  y
-	//public void init(int x, int y);
+	public void init(double x, double y);
 	
 	/* Operators */
 	// post: getPositionX() = x
 	// post: getPositionY() = y
-	// post: //forall u, v \in \int {isBelongsTo(u,v) == isBelongsTo(u-(x-getPositionX()@pre), v-(y-getPositionY()@pre)) } 
+	// post: //forall u, v \in \int {
+	// isBelongsTo(u,v) == isBelongsTo(u-(x-getPositionX()@pre), v-(y-getPositionY()@pre)) 
+	// } 
 
-	public void moveTo(int x, int y);
-	void init(int x, int y, int w, int h);
+	public void moveTo(double x, double y);
 	
 	
 }

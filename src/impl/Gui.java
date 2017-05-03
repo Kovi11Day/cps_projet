@@ -104,10 +104,10 @@ public class Gui extends Parent{
 	public int getPositionY(int i){
 		return engine.getChar(i).getPositionY()+engine.getHeight();
 	}*/
-	public int transOriginX(int x, int width){
+	public double transOriginX(double x, int width){
 		return (int) (x - 0.5*width);
 	}
-	public int transOriginY(int y, int height){
+	public double transOriginY(double y, int height){
 		return (y +height) + engine.getHeight();
 	}
 	public void updatePlayerI(int i){
@@ -125,11 +125,7 @@ public class Gui extends Parent{
 			players.get(i).techOutline.setVisible(true);		
 
 		}else{
-			/*players.get(i).techOutline.setWidth(engine.getChar(i).getTechBox().getWidth());
-			players.get(i).techOutline.setHeight(engine.getChar(i).getTechBox().getHeight());
-			players.get(i).techOutline.setX(transOriginX(engine.getChar(i).getTechBox().getPositionX(), engine.getChar(i).getTechBox().getWidth()));
-			players.get(i).techOutline.setY(transOriginY(engine.getChar(i).getTechBox().getPositionY(), engine.getChar(i).getTechBox().getHeight()));
-			players.get(i).techOutline.setVisible(true);*/	
+
 			players.get(i).techOutline.setVisible(false);		
 
 		}

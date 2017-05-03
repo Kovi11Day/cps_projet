@@ -7,6 +7,6 @@ public class GlobalVariables {
 	public static int boxHeight = 45;
 
 	public static int nbPlayersMax = 2;
-	public static long frameTime = (long) 2.; //seconds
+	public static long frameTime = (long) 100; //milliseconds
 
 }

@@ -2,10 +2,12 @@ package services;
 
 public interface CharacterService {
 	/* Observators */
-	int getPositionX();
-	int getPositionY();
+	double getPositionX();
+	double getPositionY();
 	EngineService getEngine();
-	HitboxService getCharBox ();
+	//HitboxService getCharBox ();
+	RectangleHitboxService getCharBox ();
+
 	int getLife();
 	int getSpeed();
 	boolean isRightFace();

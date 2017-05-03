@@ -1,6 +1,7 @@
 package impl;
 
 import services.HitboxService;
+import services.RectangleHitboxService;
 import services.Tech;
 
 
@@ -33,27 +34,26 @@ public class CoupDePoing implements Tech{
 	@Override
 	public int hframe() {
 		
-		return 20;
+		return 10;
 	}
 
 	@Override
 	public int rframe() {
 		
-		return 3;
+		return 5;
 	}
 
 	@Override
-	public HitboxService hitbox(int x, int y, int w , int h, boolean faceRight) {
-		HitboxService techBox = new HitboxImpl();
+	public RectangleHitboxService hitbox(double x, double y, int w , int h, boolean faceRight) {
+		RectangleHitboxService techBox = new RectangleHitboxImpl();
 		int face = 1;
 		if (!faceRight)
 			face = -1;
 		int coupWidth = w;
 		int coupHeight = h;
-		techBox.init(x , 
-				y,
-				coupWidth,
-				coupHeight);
+		techBox.init(x, y);
+		techBox.setWidthHeight(coupWidth, coupHeight);
+		
 		System.out.println();
 		/*techBox.init((int)(x + face* (0.5*w + 0.5*coupWidth)) , 
 				(int)(y + 0.5*h),

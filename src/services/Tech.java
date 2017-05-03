@@ -7,5 +7,5 @@ public interface Tech {
 	int sframe();
 	int hframe();
 	int rframe();
-	HitboxService hitbox(int x, int y, int h, int w, boolean faceRight);
+	RectangleHitboxService hitbox(double x, double y, int h, int w, boolean faceRight);
 }

@@ -118,6 +118,7 @@ public class EngineImpl extends Parent implements EngineService, Runnable{
 		gui.updatePlayerI(1);
 		players.get(0).getChar().updateFrames();
 		players.get(1).getChar().updateFrames();
+		//TODO:remove..only for print
 		if(players.get(1).getChar().getTechFrameCounter() != 0)
 			System.out.println("techframe counter=" + players.get(1).getChar().getTechFrameCounter());
 
