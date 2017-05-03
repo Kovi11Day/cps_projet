@@ -60,15 +60,7 @@ public class Gui extends Parent{
 			Rectangle rect = new Rectangle(recWidth, recHeight);
 			Rectangle techRect = new Rectangle(engine.getChar(i).getTechBox().getWidth(), engine.getChar(i).getTechBox().getHeight());
 
-			//rect.setFill(colorPlayer[i]);
-			if (i == 0){
-				rect.setFill(Color.RED);
-				techRect.setFill(Color.RED);
-			}
-			else if (i == 1){
-				rect.setFill(Color.BLUE);
-				techRect.setFill(Color.BLUE);
-			}
+			
 
 			//this.getChildren().add(rect);
 			
@@ -76,9 +68,19 @@ public class Gui extends Parent{
 			pb.setMaxSize(100, 40);
 			pb.setProgress(((float)1));
 			//this.getChildren().add(pb);
-
+			//rect.setFill(colorPlayer[i]);
+			
+			if (i == 0){
+				rect.setFill(Color.RED);
+				techRect.setFill(Color.RED);
+			}
+			else if (i == 1){
+				rect.setFill(Color.BLUE);
+				techRect.setFill(Color.BLUE);
+				pb.setLayoutX(engine.getWidth()-pb.getMaxWidth());
+			}
 			//int maxLife = engine.getPlayer(i).getChar().getLife();
-			StructPlayer sp = new StructPlayer(rect, techRect, pb, 0);
+			StructPlayer sp = new StructPlayer(rect, techRect, pb, engine.getChar(i).getLife());
 			this.getChildren().add(sp);
 
 			players.add(sp);
@@ -105,7 +107,7 @@ public class Gui extends Parent{
 		return engine.getChar(i).getPositionY()+engine.getHeight();
 	}*/
 	public double transOriginX(double x, int width){
-		return (int) (x - 0.5*width);
+		return (x - (width/2));
 	}
 	public double transOriginY(double y, int height){
 		return (y +height) + engine.getHeight();
@@ -114,6 +116,8 @@ public class Gui extends Parent{
 		//update player positions
 		players.get(i).figure.setX(transOriginX(engine.getChar(i).getPositionX(),recWidth));
 		players.get(i).figure.setY(transOriginY(engine.getChar(i).getPositionY(),recHeight));
+		players.get(i).lifeBar.setProgress((engine.getChar(i).getLife()*1.0)/(players.get(i).maxLife*1.0));
+
 		//update techBox (if necessary)
 		if (engine.getChar(i).isInHitFrame()){
 			System.out.println("isInHitFrame=" + engine.getChar(i).isInHitFrame());
@@ -129,8 +133,7 @@ public class Gui extends Parent{
 			players.get(i).techOutline.setVisible(false);		
 
 		}
-		//TODO:update life bar
-		
+
 	}
 
 }

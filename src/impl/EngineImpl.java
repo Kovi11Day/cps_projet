@@ -63,7 +63,7 @@ public class EngineImpl extends Parent implements EngineService, Runnable{
 	
 	@Override
 	public void run() {
-		while(true){
+		while(!gameOver){
 			try {
 				Thread.sleep(GlobalVariables.frameTime);
 			} catch (InterruptedException e) {
@@ -72,6 +72,7 @@ public class EngineImpl extends Parent implements EngineService, Runnable{
 			}
 			step(players.get(0).getCommande(), players.get(1).getCommande());
 		}
+		System.out.println("GAME OVER");
 	}
 	@Override
 	public int getHeight() {
@@ -118,9 +119,7 @@ public class EngineImpl extends Parent implements EngineService, Runnable{
 		gui.updatePlayerI(1);
 		players.get(0).getChar().updateFrames();
 		players.get(1).getChar().updateFrames();
-		//TODO:remove..only for print
-		if(players.get(1).getChar().getTechFrameCounter() != 0)
-			System.out.println("techframe counter=" + players.get(1).getChar().getTechFrameCounter());
+
 
 		}
 

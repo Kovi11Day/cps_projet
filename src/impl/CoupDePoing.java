@@ -10,7 +10,7 @@ public class CoupDePoing implements Tech{
 	@Override
 	public int damage() {
 		
-		return 10;
+		return 50;
 	}
 
 	@Override
@@ -49,12 +49,12 @@ public class CoupDePoing implements Tech{
 		int face = 1;
 		if (!faceRight)
 			face = -1;
-		int coupWidth = w;
-		int coupHeight = h;
+		int coupWidth = 100;
+		int coupHeight = 100;
 		techBox.init(x, y);
+		//techBox.init(x + face* (0.5*w + 0.5*coupWidth), (y + 0.5*h));
 		techBox.setWidthHeight(coupWidth, coupHeight);
 		
-		System.out.println();
 		/*techBox.init((int)(x + face* (0.5*w + 0.5*coupWidth)) , 
 				(int)(y + 0.5*h),
 				coupWidth,

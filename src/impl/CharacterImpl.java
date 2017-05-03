@@ -14,8 +14,8 @@ public class CharacterImpl implements CharacterService{
 	//protected HitboxService charBox;
 	protected RectangleHitboxService charBox;
 
-	protected int life = 0;
-	protected int maxLife = 0;//
+	protected int life = 100;
+	protected int maxLife = 100;//
 	protected int speed;
 	protected boolean rightFace;
 	protected boolean dead;
@@ -34,7 +34,7 @@ public class CharacterImpl implements CharacterService{
 		this.life = l;
 		this.speed = s;
 		this.rightFace = f;
-		this.maxLife = l; //????
+		this.maxLife = l; 
 		
 		//***UTILISATION DE HITBOX CONTRACT***//
 		RectangleHitboxService hb = new RectangleHitboxImpl();
@@ -43,7 +43,7 @@ public class CharacterImpl implements CharacterService{
 		//this.charBox = new HitboxContract(hb);
 		this.charBox = hb;
 	}
-	
+
 	@Override
 	public double getPositionX() {
 		return this.charBox.getPositionX();
