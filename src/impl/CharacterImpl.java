@@ -119,13 +119,19 @@ public class CharacterImpl implements CharacterService{
 		System.out.println(this.rightFace + ": moved left");
 
 		boolean collision = false;
+		
+		//detecter future collision
+		moveTo(getPositionX()-getSpeed(), getPositionY());
+		
 		for (int i = 0; i < GlobalVariables.nbPlayersMax; i++){
-			System.out.println("CHECK INSTANCE: "+ getEngine().getChar(i) + " and this: " + this);
 
 			if (getEngine().getChar(i) != this && getCharBox().isCollidesWith(getEngine().getChar(i).getCharBox()) ){
 				collision = true; 
 			}
 		}
+		//retourner a l'ancien position
+		moveTo(getPositionX()+getSpeed(), getPositionY());
+		
 		if (!collision){
 			if (getPositionX() >= getSpeed())
 				/*this.charBox.*/moveTo(getPositionX()-getSpeed(), getPositionY());
@@ -138,14 +144,19 @@ public class CharacterImpl implements CharacterService{
 
 	@Override
 	public void moveRight() {
-		System.out.println(this.rightFace + ": moved right");
 
 		boolean collision = false;
+		//detecter future collision
+		moveTo(getPositionX()+getSpeed(), getPositionY());
+		
 		for (int i = 0; i < GlobalVariables.nbPlayersMax; i++){
 			if (getEngine().getChar(i) != this && getCharBox().isCollidesWith(getEngine().getChar(i).getCharBox()) ){
 				collision = true; 
 			}
 		}
+		//retouner a l'ancien position
+		moveTo(getPositionX()-getSpeed(), getPositionY());
+
 		if (!collision){
 			if (getPositionX() + getSpeed() <= this.engine.getWidth())
 				/*this.charBox.*/moveTo(getPositionX()+getSpeed(), getPositionY());

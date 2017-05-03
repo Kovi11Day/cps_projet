@@ -58,26 +58,35 @@ public class RectangleHitboxImpl extends HitboxImpl implements RectangleHitboxSe
 			//|distY|<=0.5*(this.height + h.height)
 			//formule translationcentre: (xcentre,ycentre) = (x,y+0.5*rect.height)
 			
-			if (Math.abs(rh.getPositionX() - this.getPositionX()) <= (this.getWidth()+rh.getWidth())/2.0){
-				System.out.println("COLLISION X");
+			//les 2 points egaux
+			if(rh.getPositionX()==this.getPositionX()
+					&& rh.getPositionY()+(rh.height/2.0)==this.getPositionY()+(this.height/2.0)){
+				System.out.println("COLLISION eq");
+
 				return true;
 			}
-
-			if (Math.abs((rh.getPositionY()+(rh.height/2.0)) - (this.getPositionY()+(this.height/2.0))) 
+			//les 2 points differents
+			if ((rh.getPositionX()!=this.getPositionX())
+					&& (rh.getPositionY()+(rh.height/2.0)!=this.getPositionY()+(this.height/2.0))
+					&& ((Math.abs(rh.getPositionX() - this.getPositionX()) <= (this.getWidth()+rh.getWidth())/2.0)
+					||(Math.abs((rh.getPositionY()+(rh.height/2.0)) - (this.getPositionY()+(this.height/2.0))) 
+								<= ( this.getHeight()+rh.getHeight())/2.0))){
+				System.out.println("NOT COLLINEAR");
+				return true;	
+			}
+			//les 2 points en horizontal
+			if ( rh.getPositionY()+(rh.height/2.0)==this.getPositionY()+(this.height/2.0)
+					&& Math.abs(rh.getPositionX() - this.getPositionX()) <= (this.getWidth()+rh.getWidth())/2.0){
+				System.out.println("COLLISION X: "+(this.getWidth()+rh.getWidth())/2.0);
+				return true;
+			}
+			//les 2 points en vertical
+			if (rh.getPositionX()==this.getPositionX() &&Math.abs((rh.getPositionY()+(rh.height/2.0)) - (this.getPositionY()+(this.height/2.0))) 
 					<= ( this.getHeight()+rh.getHeight())/2.0){
 				System.out.println("COLLISION Y");
 				return true;
 			}
-			/*if ((Math.abs(rh.getPositionX() - this.getPositionX()) <= (this.getWidth()+rh.getWidth())/2.0)
-					||(Math.abs((rh.getPositionY()+(rh.height/2.0)) - (this.getPositionY()+(this.height/2.0))) 
-								<= ( this.getHeight()+rh.getHeight())/2.0)){
-				System.out.println("coords=" + this.getPositionX() + ", " + (this.getPositionY()+this.height/2.0));
-				System.out.println("height=" +  this.getPositionY()+(this.height/2.0));
-				System.out.println("test=" +  (this.getPositionY()+this.height/2.0));
-
-				System.out.println("COLLISION");
-				return true;	
-			}*/
+			
 			return false;
 		}
 		
