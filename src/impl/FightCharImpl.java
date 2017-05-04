@@ -3,6 +3,7 @@ package impl;
 import java.util.ArrayList;
 
 import services.Commande;
+import services.EngineService;
 import services.FightCharService;
 import services.HitboxService;
 import services.RectangleHitboxService;
@@ -150,12 +151,12 @@ public class FightCharImpl  extends CharacterImpl implements FightCharService{
 	}
 	@Override
 	public void updateVictim() {
-		System.out.println("FRAME BEGIN");
+		/*System.out.println("FRAME BEGIN");
 		System.out.println("update status: otherCharTeching? " +this.otherFightChar.isTeching() );
 		System.out.println("update status: isInHitFrame? " +this.otherFightChar.isInHitFrame() );
 		System.out.println("update status: isTechHasAlreadyHit? " +!this.otherFightChar.isTechHasAlreadyHit() );
 		System.out.println("update status: isCollidesWith? " +this.getCharBox().isCollidesWith(this.otherFightChar.getTechBox()) );
-		System.out.println("FRAME END");
+		System.out.println("FRAME END");*/
 
 		if(this.otherFightChar.isTeching() && this.otherFightChar.isInHitFrame() && !this.otherFightChar.isTechHasAlreadyHit()
 				&& this.getCharBox().isCollidesWith(this.otherFightChar.getTechBox())){
@@ -242,6 +243,11 @@ public class FightCharImpl  extends CharacterImpl implements FightCharService{
 	@Override
 	public void setNewTechMastered(Tech t) {
 		this.techMastered.add(t);
+	}
+
+	@Override
+	public void init(int l, int s, boolean f, EngineService e) {
+		super.init(l, s, f);
 	}
 	
 

@@ -1,5 +1,6 @@
 package decorators;
 
+import services.HitboxService;
 import services.RectangleHitboxService;
 
 public class RectangleHitboxDecorator extends HitboxDecorator 
@@ -36,6 +37,24 @@ public class RectangleHitboxDecorator extends HitboxDecorator
 	public void setWidthHeight(int w, int h) {
 		getDelegate().setWidthHeight(w, h);
 		
+	}
+
+	@Override
+	public boolean isBelongsTo(double x, double y) {
+		
+		return getDelegate().isBelongsTo(x, y);
+	}
+
+	@Override
+	public boolean isCollidesWith(HitboxService h) {
+		
+		return getDelegate().isCollidesWith(h);
+	}
+
+	@Override
+	public boolean isEqualsTo(HitboxService h) {
+		
+		return getDelegate().isEqualsTo(h);
 	}
 
 }

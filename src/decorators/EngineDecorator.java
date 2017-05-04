@@ -4,6 +4,7 @@ import javafx.scene.Parent;
 import services.CharacterService;
 import services.Commande;
 import services.EngineService;
+import services.FightCharService;
 import services.PlayerService;
 
 public class EngineDecorator extends Parent implements EngineService,Runnable{
@@ -36,7 +37,7 @@ private final EngineService delegate;
 
 
 	@Override
-	public CharacterService getChar(int i) {
+	public FightCharService getChar(int i) {
 		
 		return delegate.getChar(i);
 	}

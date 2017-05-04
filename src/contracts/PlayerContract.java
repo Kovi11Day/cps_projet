@@ -1,8 +1,8 @@
 package contracts;
 
-import decorators.PlayerDecorator;
-import services.CharacterService;
+import services.FightCharService;
 import services.PlayerService;
+import decorators.PlayerDecorator;
 
 public class PlayerContract extends PlayerDecorator{
 	
@@ -15,7 +15,7 @@ public class PlayerContract extends PlayerDecorator{
 	
 	
 	@Override
-	public CharacterService getChar() {
+	public FightCharService getChar() {
 		
 		return super.getChar();
 	}
@@ -37,39 +37,42 @@ public class PlayerContract extends PlayerDecorator{
 		
 		return super.getKeyNeutral();
 	}
-
 	@Override
-	public void init(CharacterService c,String left, String right, String neutral) {
+	public void init(FightCharService c,String left, String right, String neutral, 
+			String upLeft, String UpRight, String up, 
+			String downLeft, String downRight, String down, 
+			String coupPoing, String coupPied, String coupTete){
 		//inv@pre
-		checkInvariant();
-		
-		//pre: left != right && right != neutral && left != neutral
-		if (left == right || right == neutral || left == neutral)
-			throw new PreconditionError("PlayerContract: left != right && right != neutral && left != neutral");
+				checkInvariant();
+				
+				//pre: left != right && right != neutral && left != neutral
+				if (left == right || right == neutral || left == neutral)
+					throw new PreconditionError("PlayerContract: left != right && right != neutral && left != neutral");
 
-		//run
-		super.init(c,left, right, neutral);
-		
-		//inv@post
-		checkInvariant();	
-		
-		//post: getKeyLeft() = left
-		if (getKeyLeft() != left)
-			throw new PostconditionError("PlayerContract: getKeyLeft() = left");
-		
-		//post: getKeyRight() = right
-		if (getKeyRight() != right)
-			throw new PostconditionError("PlayerContract: getKeyRight() = right");
-		
-		//post: getKeyNeutral() = neutral
-		if (getKeyNeutral() != neutral)
-			throw new PostconditionError("PlayerContract: getKeyNeutral() = neutral");
-		
-		//post: getChar() = c
-				if (getChar() != c)
-					throw new PostconditionError("PlayerContract: getChar() = c");
+				//run
+				super.init(c, left, right, neutral, upLeft, UpRight, up, downLeft, downRight, down, coupPoing, coupPied, coupTete);
+				
+				//inv@post
+				checkInvariant();	
+				
+				//post: getKeyLeft() = left
+				if (getKeyLeft() != left)
+					throw new PostconditionError("PlayerContract: getKeyLeft() = left");
+				
+				//post: getKeyRight() = right
+				if (getKeyRight() != right)
+					throw new PostconditionError("PlayerContract: getKeyRight() = right");
+				
+				//post: getKeyNeutral() = neutral
+				if (getKeyNeutral() != neutral)
+					throw new PostconditionError("PlayerContract: getKeyNeutral() = neutral");
+				
+				//post: getChar() = c
+						if (getChar() != c)
+							throw new PostconditionError("PlayerContract: getChar() = c");
 
 	}
+
 	
 	//TODO:
 	//handeKey()

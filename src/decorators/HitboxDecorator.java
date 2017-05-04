@@ -27,23 +27,6 @@ public abstract class HitboxDecorator extends Parent implements HitboxService{
 
 	}
 
-	@Override
-	public boolean isBelongsTo(double x, double y) {
-		
-		return delegate.isBelongsTo(x, y);
-	}
-
-	@Override
-	public boolean isCollidesWith(HitboxService h) {
-		
-		return delegate.isCollidesWith(h);
-	}
-
-	@Override
-	public boolean isEqualsTo(HitboxService h) {
-		
-		return delegate.isEqualsTo(h);
-	}
 
 	@Override
 	public void init(double x, double y) {

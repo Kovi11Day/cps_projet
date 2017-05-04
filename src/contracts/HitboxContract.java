@@ -71,7 +71,7 @@ public abstract class  HitboxContract extends HitboxDecorator{
 		
 		// post: getPositionX() = x
 		if(getPositionX() != x){
-			throw new PostconditionError("getPositionX() = x");
+			throw new PostconditionError("gePositionX() = x");
 		}
 		// post: getPositionY() = y
 		if(getPositionY() != y){

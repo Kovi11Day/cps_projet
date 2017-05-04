@@ -4,7 +4,7 @@ import services.CharacterService;
 import services.Commande;
 import services.EngineService;
 import services.GlobalVariables;
-import services.HitboxService;
+import services.RectangleHitboxService;
 import decorators.CharacterDecorator;
 
 public class CharacterContract extends CharacterDecorator {
@@ -68,12 +68,12 @@ public class CharacterContract extends CharacterDecorator {
 	}
 	
 	@Override
-	public int getPositionX() {
+	public double getPositionX() {
 		return super.getPositionX();
 	}
 	
 	@Override
-	public int getPositionY() {
+	public double getPositionY() {
 		return super.getPositionY();
 	}
 	
@@ -84,7 +84,7 @@ public class CharacterContract extends CharacterDecorator {
 	}
 	
 	@Override
-	public HitboxService getCharBox() {
+	public RectangleHitboxService getCharBox() {
 		
 		return super.getCharBox();
 	}
@@ -120,10 +120,10 @@ public class CharacterContract extends CharacterDecorator {
 		checkInvariant();
 		
 		//captures
-		int getPositionX_atPre = getPositionX();
+		double getPositionX_atPre = getPositionX();
 		boolean isRightFace_atPre = isRightFace();
 		int getLife_atPre = getLife();
-		int getPositionY_atPre = getPositionY();
+		double getPositionY_atPre = getPositionY();
 		//run
 		super.moveLeft();
 		
@@ -172,10 +172,10 @@ public class CharacterContract extends CharacterDecorator {
 		checkInvariant();
 		
 		//captures
-		int getPositionX_atPre = getPositionX();
+		double getPositionX_atPre = getPositionX();
 		boolean isRightFace_atPre = isRightFace();
 		int getLife_atPre = getLife();
-		int getPositionY_atPre = getPositionY();
+		double getPositionY_atPre = getPositionY();
 		//run
 		super.moveRight();
 		
@@ -226,7 +226,7 @@ public class CharacterContract extends CharacterDecorator {
 				
 		//captures
 		boolean isRightFace_atPre = isRightFace();
-		int getPositionX_atPre = getPositionX();
+		double getPositionX_atPre = getPositionX();
 		
 		//run 
 		super.switchSide();
@@ -249,7 +249,7 @@ public class CharacterContract extends CharacterDecorator {
 		checkInvariant();
 		
 		//captures 
-		int getPositionX_atPre = getPositionX();
+		double getPositionX_atPre = getPositionX();
 		CharacterService this_atPre = (CharacterService)this.clone();
 
 

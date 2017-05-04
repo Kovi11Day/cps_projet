@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import services.CharacterService;
 import services.Commande;
 import services.EngineService;
+import services.FightCharService;
 import services.GlobalVariables;
 import services.PlayerService;
 import decorators.EngineDecorator;
@@ -117,6 +118,7 @@ public class EngineContract extends EngineDecorator{
 	@Override
 	public int getHeight() {
 		return super.getHeight();
+	
 	}
 
 
@@ -128,7 +130,7 @@ public class EngineContract extends EngineDecorator{
 
 
 	@Override
-	public CharacterService getChar(int i) {
+	public FightCharService getChar(int i) {
 		// pre:i  \in [1,2]
 		if (i < 1 || i > GlobalVariables.nbPlayersMax)
 			throw new PreconditionError("EngineContract: pre:i  in [1,2]");

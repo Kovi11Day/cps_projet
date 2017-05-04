@@ -4,7 +4,7 @@ import javafx.scene.Parent;
 import services.CharacterService;
 import services.Commande;
 import services.EngineService;
-import services.HitboxService;
+import services.RectangleHitboxService;
 
 public class CharacterDecorator extends Parent implements CharacterService{
 	private final CharacterService delegate;
@@ -15,12 +15,12 @@ public class CharacterDecorator extends Parent implements CharacterService{
 	}
 	
 	@Override
-	public int getPositionX() {
+	public double getPositionX() {
 		return delegate.getPositionX();
 	}
 
 	@Override
-	public int getPositionY() {
+	public double getPositionY() {
 		return delegate.getPositionY();
 	}
 
@@ -31,7 +31,7 @@ public class CharacterDecorator extends Parent implements CharacterService{
 	}
 
 	@Override
-	public HitboxService getCharBox() {
+	public RectangleHitboxService getCharBox() {
 		
 		return delegate.getCharBox();
 	}
@@ -102,6 +102,16 @@ public class CharacterDecorator extends Parent implements CharacterService{
 	@Override
 	public void setEngine(EngineService engine) {
 		delegate.setEngine(engine);
+	}
+
+	@Override
+	public int getWidth() {
+		return delegate.getWidth();
+	}
+
+	@Override
+	public int getHeight() {
+		return delegate.getHeight();
 	}
 	
 }
