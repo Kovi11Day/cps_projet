@@ -148,9 +148,53 @@ public class FightCharImpl  extends CharacterImpl implements FightCharService{
 		this.techFrameCounter = t.sframe() + t.hframe() + t.rframe();
 		this.techBox = t.hitbox(this.getPositionX(), this.getPositionY(), this.getWidth(), this.getHeight(), this.rightFace);
 	}
-
 	@Override
-	public void updateStatus() {
+	public void updateVictim() {
+		System.out.println("FRAME BEGIN");
+		System.out.println("update status: otherCharTeching? " +this.otherFightChar.isTeching() );
+		System.out.println("update status: isInHitFrame? " +this.otherFightChar.isInHitFrame() );
+		System.out.println("update status: isTechHasAlreadyHit? " +!this.otherFightChar.isTechHasAlreadyHit() );
+		System.out.println("update status: isCollidesWith? " +this.getCharBox().isCollidesWith(this.otherFightChar.getTechBox()) );
+		System.out.println("FRAME END");
+
+		if(this.otherFightChar.isTeching() && this.otherFightChar.isInHitFrame() && !this.otherFightChar.isTechHasAlreadyHit()
+				&& this.getCharBox().isCollidesWith(this.otherFightChar.getTechBox())){
+			System.out.println(" is getting attack");
+			System.out.println(" is getting attack");
+			System.out.println(" is getting attack");
+
+			if(this.isBlocking){
+				this.bstunFrameCounter = Math.max(this.bstunFrameCounter, this.otherFightChar.getTech().bstun());
+			}
+			if(!this.isBlocking && !this.isTeching()){
+				this.hstunFrameCounter = Math.max(this.hstunFrameCounter, this.otherFightChar.getTech().hstun());
+				this.life = Math.max(0, this.life - this.otherFightChar.getTech().damage());
+				System.out.println("life going, reached " + this.life);
+
+			}
+			if(!this.isBlocking && this.isTeching()){
+				this.hstunFrameCounter = Math.max(this.hstunFrameCounter, this.otherFightChar.getTech().hstun());
+				this.techFrameCounter = 0;
+			}
+		}
+	}
+	@Override
+	public void updateAttacker() {	
+		if(this.isTeching() && this.isInHitFrame() && !this.isTechHasAlreadyHit() 
+				&& this.techBox.isCollidesWith(this.otherFightChar.getTechBox())){
+
+			this.techHasAlreadyHit = true;
+			
+		}
+	}
+	/*public void updateStatus() {
+		System.out.println("FRAME BEGIN");
+		System.out.println("update status: otherCharTeching? " +this.otherFightChar.isTeching() );
+		System.out.println("update status: isInHitFrame? " +this.otherFightChar.isInHitFrame() );
+		System.out.println("update status: isTechHasAlreadyHit? " +!this.otherFightChar.isTechHasAlreadyHit() );
+		System.out.println("update status: isCollidesWith? " +this.getCharBox().isCollidesWith(this.otherFightChar.getTechBox()) );
+		System.out.println("FRAME END");
+
 		if(this.otherFightChar.isTeching() && this.otherFightChar.isInHitFrame() && !this.otherFightChar.isTechHasAlreadyHit()
 				&& this.getCharBox().isCollidesWith(this.otherFightChar.getTechBox())){
 			System.out.println(" is getting attack");
@@ -179,7 +223,7 @@ public class FightCharImpl  extends CharacterImpl implements FightCharService{
 			
 		}
 		
-	}
+	}*/
 
 	@Override
 	public void updateFrames() {

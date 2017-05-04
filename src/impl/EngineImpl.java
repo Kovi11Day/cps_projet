@@ -113,8 +113,13 @@ public class EngineImpl extends Parent implements EngineService, Runnable{
 	public void step(Commande c1, Commande c2) {
 		players.get(0).getChar().step(c1);
 		players.get(1).getChar().step(c2);
-		players.get(0).getChar().updateStatus();
-		players.get(1).getChar().updateStatus();
+		//players.get(0).getChar().updateStatus();
+		//players.get(1).getChar().updateStatus();
+		players.get(0).getChar().updateVictim();
+		players.get(1).getChar().updateVictim();
+		players.get(0).getChar().updateAttacker();
+		players.get(1).getChar().updateAttacker();
+
 		gui.updatePlayerI(0);
 		gui.updatePlayerI(1);
 		players.get(0).getChar().updateFrames();

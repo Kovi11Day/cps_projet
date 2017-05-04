@@ -10,31 +10,31 @@ public class CoupDePoing implements Tech{
 	@Override
 	public int damage() {
 		
-		return 50;
+		return 10;
 	}
 
 	@Override
 	public int hstun() {
 		
-		return 3;
+		return 10;
 	}
 
 	@Override
 	public int bstun() {
 		
-		return 2;
+		return 10;
 	}
 
 	@Override
 	public int sframe() {
 		
-		return 4;
+		return 10;
 	}
 
 	@Override
 	public int hframe() {
 		
-		return 10;
+		return 30;
 	}
 
 	@Override

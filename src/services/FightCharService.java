@@ -26,7 +26,9 @@ public interface FightCharService extends CharacterService{
 
 	//TODO:inv + pre + post for each operator
 	void startTech(Tech t);
-	void updateStatus();
+	//void updateStatus();
+	void updateVictim();
+	void updateAttacker();
 	void updateFrames();
 	void setOtherFightChar(FightCharService c);
 	void setNewTechMastered(Tech t);
