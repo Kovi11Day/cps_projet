@@ -99,21 +99,21 @@ public interface FightCharService extends CharacterService{
 
 	/*
 	 * pre: getOtherFightChar() != null
-	 * post: (getOtherFightChar().isTeching() && getOtherFightChar().isInHitFrame 
-	 * 				&& !getOtherFightChar().isHasAlreadyHit() && getOtherFightChar().getTechBox().collidesWith(getCharBox()))
+	 * post: (getOtherFightChar().isTeching()@pre && getOtherFightChar().isInHitFrame()@pre
+	 * 				&& !getOtherFightChar().isHasAlreadyHit()@pre && getOtherFightChar()@pre.getTechBox().collidesWith(getCharBox()@pre))
 	 * 		==>
 	 * 		(
 	 * 			(
 	 * 				isBlocking()@pre ==> 
 	 * 					getBstunFrameCounter() == max(getBstunFrameCounter()@pre, getOtherFightChar().tech().bstun()
-	 * 					&& life() == life()@pre
+	 * 					&& getLife() == getLife()@pre
 	 * 					&& isBlocking() == isBlocking()@pre	
 	 * 			)
 	 * 			&&
 	 * 			(
 	 * 				!isBlocking()@pre && !isTeching()@pre ==>
 	 * 					getHstunFrameCounter() == max(getHstunFrameCounter()@pre, getOtherFightChar().tech().hstun())
-	 * 					&& life() == life()@pre - getOtherFightChar().tech().damage()
+	 * 					&& getLife() == getLife()@pre - getOtherFightChar().tech().damage()
 	 * 					&& isBlocking() == isBlocking()@pre
 	 * 			)
 	 * 			&&
@@ -121,19 +121,47 @@ public interface FightCharService extends CharacterService{
 	 * 				!isBlocking()@pre && isTeching()@pre ==>
 	 * 					getHstunFrameCounter() == max(getHstunFrameCounter()@pre, getOtherFightChar().tech().hstun())
 	 * 					&& getTechFrameCounter() == 0
-	 * 					&& life() == life()@pre
+	 * 					&& getLife() == getLife()@pre
 	 * 					&& isBlocking() == isBlocking()@pre
 	 * 			)
 	 * 		)
 	 */
 	void updateVictim();
 	
+	
 	/*
 	 * pre: getOtherFightCharacter() != null
+	 * post: (isTeching()@pre && isInHitFrame()@pre &&!isHasAlreadyHit()@pre && 
+	 * 				techBox()@pre.collidesWith(getOtherFightCharacter(C)@pre))
+	 * 		==>
+	 * 		(
+	 * 			isHasAlreadyHit() == true
+	 * 			&& isInHitFrame() ==isInHitFrame() @pre
+	 * 			&& getLife() ==getLife() @pre
+	 * 			&& getHstunFrameCounter() ==getHstunFrameCounter() @pre
+	 * 			&& getBstunFrameCounter() ==getBstunFrameCounter() @pre
+	 * 		)
 	 */
 	void updateAttacker();
+	
+	/*
+	 * post: getTechFrameCounter() = max (0, getTechFrameCounter()@pre - 1)
+	 * post: getBstunFrameCounter() = max (0, getBstunFrameCounter()@pre - 1)
+	 * post: getHstunFrameCounter() = max (0, getBstunFrameCounter()@pre - 1)
+	 * post: !isBlockStunned()@pre ==> !isBlocking()
+	 */
 	void updateFrames();
+	
+	/*
+	 * post: getOtherFightChar() != null
+	 */
 	void setOtherFightChar(FightCharService c);
+	
+	/*
+	 * pre: t.damage() >= 0 && t.hstun >= 0 && t.bstun >= 0 && t.sframe() >= 0 && t.hframe() >= 0 && t.rframe() >= 0
+	 * post: getNbTechMastered() == getNbTechMastered()@pre + 1
+	 * \exists i in [1, getNbTechMastered()] getTechMastered(i) == t
+	 */
 	void setNewTechMastered(Tech t);
 	
 }

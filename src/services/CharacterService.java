@@ -64,8 +64,8 @@ public interface CharacterService {
 	
 	/* pre: !isDead() && isReady()
 	 * post: step(Commande.LEFT) = moveLeft()
-	 * 		step(Commande.RIGHT) = moveRight()
-	 * 		step(Commande.NEUTRAL) = this
+	 * post: step(Commande.RIGHT) = moveRight()
+	 * post: step(Commande.NEUTRAL) = this
 	 */
 	public void step(Commande c);
 	
