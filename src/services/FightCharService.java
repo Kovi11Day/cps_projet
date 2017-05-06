@@ -86,12 +86,51 @@ public interface FightCharService extends CharacterService{
 	//post: \forall i \in [1,getNbTechMastered()], getTechMastered(i)= getTechMastered(i)@pre
 	void startTech(Tech t);
 	
-	//pre:!dead() && isReady()
-	//post: iBlocking() == c.equals(bloque)
+	/* pre: !isDead() && isReady()
+	 * post: !isControllable()@pre ==> this@pre = this
+	 * post: step(Commande.LEFT) = moveLeft()
+	 * post: step(Commande.RIGHT) = moveRight()
+	 * post: step(Commande.NEUTRAL) = this
+	 * post: step(Commande.COUP_DE_POING) = startTech(getTechMastered(1))
+	 * post: step(Commande.COUP_DE_PIED) =  startTech(getTechMastered(2))
+	 * post: step(Commande.COUP_DE_TETE) = startTech(getTechMastered(3))
+	 */
 	public void step(Commande c);
 
-	//void updateStatus();
+	/*
+	 * pre: getOtherFightChar() != null
+	 * post: (getOtherFightChar().isTeching() && getOtherFightChar().isInHitFrame 
+	 * 				&& !getOtherFightChar().isHasAlreadyHit() && getOtherFightChar().getTechBox().collidesWith(getCharBox()))
+	 * 		==>
+	 * 		(
+	 * 			(
+	 * 				isBlocking()@pre ==> 
+	 * 					getBstunFrameCounter() == max(getBstunFrameCounter()@pre, getOtherFightChar().tech().bstun()
+	 * 					&& life() == life()@pre
+	 * 					&& isBlocking() == isBlocking()@pre	
+	 * 			)
+	 * 			&&
+	 * 			(
+	 * 				!isBlocking()@pre && !isTeching()@pre ==>
+	 * 					getHstunFrameCounter() == max(getHstunFrameCounter()@pre, getOtherFightChar().tech().hstun())
+	 * 					&& life() == life()@pre - getOtherFightChar().tech().damage()
+	 * 					&& isBlocking() == isBlocking()@pre
+	 * 			)
+	 * 			&&
+	 * 			(
+	 * 				!isBlocking()@pre && isTeching()@pre ==>
+	 * 					getHstunFrameCounter() == max(getHstunFrameCounter()@pre, getOtherFightChar().tech().hstun())
+	 * 					&& getTechFrameCounter() == 0
+	 * 					&& life() == life()@pre
+	 * 					&& isBlocking() == isBlocking()@pre
+	 * 			)
+	 * 		)
+	 */
 	void updateVictim();
+	
+	/*
+	 * pre: getOtherFightCharacter() != null
+	 */
 	void updateAttacker();
 	void updateFrames();
 	void setOtherFightChar(FightCharService c);
