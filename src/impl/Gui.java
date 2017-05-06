@@ -124,7 +124,8 @@ public class Gui extends Parent{
 			//update player
 			players.get(i).techOutline.setWidth(engine.getChar(i).getTechBox().getWidth());
 			players.get(i).techOutline.setHeight(engine.getChar(i).getTechBox().getHeight());
-			players.get(i).techOutline.setX(transOriginX(engine.getChar(i).getTechBox().getPositionX(), engine.getChar(i).getTechBox().getWidth()));
+			players.get(i).techOutline.
+			setX(transOriginX(engine.getChar(i).getTechBox().getPositionX(), engine.getChar(i).getTechBox().getWidth()));
 			players.get(i).techOutline.setY(transOriginY(engine.getChar(i).getTechBox().getPositionY(), engine.getChar(i).getTechBox().getHeight()));
 			players.get(i).techOutline.setVisible(true);		
 

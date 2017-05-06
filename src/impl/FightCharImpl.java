@@ -50,7 +50,7 @@ public class FightCharImpl  extends CharacterImpl implements FightCharService{
 	}
 
 	@Override
-	public boolean isHitSunned() {
+	public boolean isHitStunned() {
 		
 		return hstunFrameCounter > 0;
 	}
@@ -85,7 +85,7 @@ public class FightCharImpl  extends CharacterImpl implements FightCharService{
 	@Override
 	public boolean isControllable() {
 		
-		return !(isTeching()||this.isBlockStunned()||this.isHitSunned());
+		return !(isTeching()||this.isBlockStunned()||this.isHitStunned());
 	}
 
 	@Override

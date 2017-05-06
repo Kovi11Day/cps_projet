@@ -6,7 +6,7 @@ import services.Commande;
 import services.EngineService;
 import services.RectangleHitboxService;
 
-public class CharacterDecorator extends Parent implements CharacterService{
+public class CharacterDecorator  implements CharacterService{
 	private final CharacterService delegate;
 	
 
@@ -90,16 +90,6 @@ public class CharacterDecorator extends Parent implements CharacterService{
 	}
 
 	@Override
-	public CharacterService clone() {
-		return delegate.clone();
-	}
-
-	@Override
-	public boolean equals(CharacterService c) {
-		return delegate.equals(c);
-	}
-
-	@Override
 	public void setEngine(EngineService engine) {
 		delegate.setEngine(engine);
 	}
@@ -112,6 +102,11 @@ public class CharacterDecorator extends Parent implements CharacterService{
 	@Override
 	public int getHeight() {
 		return delegate.getHeight();
+	}
+
+	@Override
+	public boolean isReady() {
+		return delegate.isReady();
 	}
 	
 }

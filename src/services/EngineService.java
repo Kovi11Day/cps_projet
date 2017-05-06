@@ -6,18 +6,18 @@ public interface EngineService extends Runnable{
 	int getHeight();
 	int getWidth();
 	int getSpace();
-	// pre:i  \in [1,2]
-	//CharacterService getChar(int i);
+	int getNbPlayers();
+	
+	// pre:i \in [1,getNbPlayers()]
 	FightCharService getChar(int i);
 
-	// pre:i  \in [1,2]
+	// pre:i \in [1,getNbPlayers()]
 	PlayerService getPlayer(int i);
 	
 	boolean isGameOver();
 	
 	/* Invariants */
-	//inv: isGameOver() == \exists i \in [1,2] {getChar(i).isDead()}
-	
+	//inv: isGameOver() == \exists i:int \in [1,getNbPlayers()] {getChar(i).isDead()}
 	
 	/* Initializers */
 	
@@ -26,8 +26,10 @@ public interface EngineService extends Runnable{
 	//      \intersection {p2.getKeyLeft(), p2.getKeyRight(), p2.getKeyNeutral()} = \empty
 	//post: getHeight() = h
 	//post: getWidth() = w
+	//post: getSpace() = s
 	//post: getPlayer(1) = p1
 	//post: getPlayer(2) = p2
+	//post: getNbPlayers() = 2;
 	//post: getChar(1).getPositionX() = w//2 - s//2
 	//post: getChar(2).getPositionX() = w//2 + s//2
 	//post: getChar(1).getPositionY() = 0
@@ -37,10 +39,30 @@ public interface EngineService extends Runnable{
 	public void init(int h, int w, int s, PlayerService p1, PlayerService p2);
 	
 	/* Operators */
-	// pre: ! isGameOver()
-	// post: getChar(1) = getChar(1)@pre.step(c1)
-	// post: getChar(2) = getChar(2)@pre.step(c2)
-	public void step(Commande c1, Commande c2);
+	// pre: !isGameOver() 
+	// post: updateGame() = step().updateAllVictims().updateAllAttackers().updateAllFrames()
+	public void updateGame();
+	
+	// pre: !isGameOver()
+	/* post: \forall i \in [1,getNbPlayers()] {getChar(i) = getChar(i)@pre.step(getPlayer(i)@pre.getCommande())*/
+	public void step();
+	
+	// pre: !isGameOver()
+	/* post: \forall i \in [1,getNbPlayers()] {getChar(i) = getChar(i)@pre.updateVictim()*/
+	public void updateAllVictims();
+
+	// pre: !isGameOver()
+	/* post: \forall i \in [1,getNbPlayers()] {getChar(i) = getChar(i)@pre.updateAttacker()*/
+	public void updateAllAttackers();
+
+	// pre: !isGameOver()
+	/* post: \forall i \in [1,getNbPlayers()] {getChar(i) = getChar(i)@pre.updateFrames()*/
+	public void updateAllFrames();
+	
+	//pre:!isGameOver()
+	//post: getNbPlayers() = getNbPlayers()@pre + 1;
+	public void setNewPlayer(PlayerService p);
+	
 	public void run();
 	
 	

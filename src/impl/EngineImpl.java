@@ -16,7 +16,6 @@ public class EngineImpl extends Parent implements EngineService, Runnable{
 	private int width;
 	private int space;
 	private ArrayList<PlayerService> players;
-	private boolean gameOver;
 	
 	//
 	Pane pane;
@@ -24,13 +23,9 @@ public class EngineImpl extends Parent implements EngineService, Runnable{
 	public EngineImpl(Gui gui){
 		super();
 		this.gui = gui;
-		//init(h,w,s,p1,p2);
 		pane = new Pane();
-		//pane.setMinWidth(w); //add size of character width so that character stays within sight
-		//pane.setMinHeight(h);
-		  this.getChildren().add(pane);
-		  
-		  	
+		this.getChildren().add(pane);
+		this.players = new ArrayList<>();
 	}
 	
 	@Override
@@ -38,39 +33,22 @@ public class EngineImpl extends Parent implements EngineService, Runnable{
 		this.height = h;
 		this.width = w;
 		this.space = s;
-		this.players = new ArrayList<>();
 		this.players.add(p1);
 		this.players.add(p2);
-		
-		//---p1.getChar().getCharBox().moveTo(w/2-s/2, 0);
-		//---p2.getChar().getCharBox().moveTo(w/2+s/2, 0);
-		
-		
+		//gui
 		pane.setMinWidth(w); 
 		pane.setMinHeight(h);
-		
-		//HitboxImpl h1 = (HitboxImpl) p1.getChar().getCharBox();
-		// HitboxImpl h2 = (HitboxImpl) p2.getChar().getCharBox();
-		  //this.getChildren().add(h1);
-		  //	this.getChildren().add(h2);
-		/*
-		this.getChildren().add((HitboxContract)p1);
-		  	this.getChildren().add(((CharacterImpl)p1.getChar()).getProgressBar());
-		  	ProgressBar pb2 = ((CharacterImpl)p2.getChar()).getProgressBar();
-		  	pb2.setLayoutX(w - pb2.getMaxWidth());
-		  	this.getChildren().add(((CharacterImpl)p2.getChar()).getProgressBar());*/
 	}
 	
 	@Override
 	public void run() {
-		while(!gameOver){
+		while(!isGameOver()){
 			try {
 				Thread.sleep(GlobalVariables.frameTime);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			step(players.get(0).getCommande(), players.get(1).getCommande());
+			step();
 		}
 		System.out.println("GAME OVER");
 	}
@@ -104,29 +82,61 @@ public class EngineImpl extends Parent implements EngineService, Runnable{
 
 	@Override
 	public boolean isGameOver() {
-		return this.gameOver;
+		for(int i = 0; i < players.size(); i++){
+			if(players.get(i).getChar().isDead()){
+				return true;
+			}
+		}
+		return false;
 	}
 
-	
+	@Override
+	public int getNbPlayers() {
+		return this.players.size();
+	}
+
 
 	@Override
-	public void step(Commande c1, Commande c2) {
-		players.get(0).getChar().step(c1);
-		players.get(1).getChar().step(c2);
-		//players.get(0).getChar().updateStatus();
-		//players.get(1).getChar().updateStatus();
-		players.get(0).getChar().updateVictim();
-		players.get(1).getChar().updateVictim();
-		players.get(0).getChar().updateAttacker();
-		players.get(1).getChar().updateAttacker();
+	public void setNewPlayer(PlayerService p) {
+		this.players.add(p);
+	}
 
-		gui.updatePlayerI(0);
-		gui.updatePlayerI(1);
-		players.get(0).getChar().updateFrames();
-		players.get(1).getChar().updateFrames();
+	@Override
+	public void updateGame() {
+		step();
+		updateAllVictims();
+		updateAllAttackers();
+		updateAllFrames();
+	}
 
+	@Override
+	public void step() {
+		for(int i = 0; i < players.size(); i++){
+			getChar(i).step(getPlayer(i).getCommande());
+		}		
+	}
 
-		}
+	@Override
+	public void updateAllVictims() {
+		for(int i = 0; i < players.size(); i++){
+			getChar(i).updateVictim();;
+		}				
+	}
+
+	@Override
+	public void updateAllAttackers() {
+		for(int i = 0; i < players.size(); i++){
+			getChar(i).updateAttacker();;
+		}				
+	}
+
+	@Override
+	public void updateAllFrames() {
+		for(int i = 0; i < players.size(); i++){
+			getChar(i).updateFrames();
+		}		
+		
+	}
 
 	
 

@@ -56,12 +56,14 @@ public abstract class  HitboxContract extends HitboxDecorator{
 		double getPositionX_at_pre = getPositionX();
 		double getPositionY_at_pre = getPositionY();
 		/* capture du centre*/
-		boolean belongsTo_centre_at_pre = isBelongsTo(getPositionX(), getPositionY());
+		//boolean belongsTo_centre_at_pre = isBelongsTo(getPositionX(), getPositionY());
 		/* capture du centre +100 */
-		boolean belongsTo_centre_100_at_pre = isBelongsTo(getPositionX()+100,
-				getPositionY()+100);
+		//boolean belongsTo_centre_100_at_pre = isBelongsTo(getPositionX()+100,
+				//
+	//
+		//getPositionY()+100);
 		/* capture d'un point absolue*/
-		boolean belongsTo_abs_at_pre = isBelongsTo(300, 0);
+		//boolean belongsTo_abs_at_pre = isBelongsTo(300, 0);
 		
 		// TRAITEMENT
 		super.moveTo(x, y);
@@ -83,24 +85,24 @@ public abstract class  HitboxContract extends HitboxDecorator{
 		// } 
 		
 		/*test du centre*/
-		if(! isBelongsTo(getPositionX(), getPositionY()) == belongsTo_centre_at_pre){
+		/*if(! isBelongsTo(getPositionX(), getPositionY()) == belongsTo_centre_at_pre){
 			throw new PostconditionError("! isBelongsTo(getPositionX(), getPositionY())"
 					+ " == belongsTo_centre_at_pre");
-		}
+		}*/
 		
 		/* teste du centre +100*/
-		if(! isBelongsTo(getPositionX()+100, getPositionY()+100) == belongsTo_centre_100_at_pre){
+		/*if(! isBelongsTo(getPositionX()+100, getPositionY()+100) == belongsTo_centre_100_at_pre){
 			throw new PostconditionError("! isBelongsTo(getPositionX()+100, "
 					+ "getPositionY()+100) == belongsTo_centre_100_at_pre");
-		}
+		}*/
 		
 		/* teste d'un point absolue */
-		if(! isBelongsTo(300+(x-getPositionX_at_pre),
+		/*if(! isBelongsTo(300+(x-getPositionX_at_pre),
 				0+(y- getPositionY_at_pre)) == belongsTo_abs_at_pre ){
 			throw new PostconditionError("! isBelongsTo(300+(x-getPositionX_at_pre),"
 				+"0+(y- getPositionY_at_pre)) == belongsTo_abs_at_pre ");
 			
-		}
+		}*/
 		
 	}
 }

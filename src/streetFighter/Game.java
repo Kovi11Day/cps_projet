@@ -18,21 +18,29 @@ import services.FightCharService;
 import services.PlayerService;
 //import contracts.CharacterContract;
 import contracts.EngineContract;
+import contracts.FightCharContract;
+import contracts.InvariantError;
+import contracts.PostconditionError;
+import contracts.PreconditionError;
 //import contracts.PlayerContract;
 
 public class Game extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		try{
+
 		Gui gui = new Gui();
 
 		//***UTILISATION DE CHARACTER CONTRACT***//
 		//CharacterService char1= new CharacterImpl();
 		//CharacterService char2= new CharacterImpl();
-		FightCharService char1= new FightCharImpl();
-		FightCharService char2= new FightCharImpl();
-		 
-		char1.init(100,20,true);
+		FightCharService charImplem1= new FightCharImpl();
+		FightCharService charImplem2= new FightCharImpl();
+		FightCharService char1= new FightCharContract(charImplem1);
+		FightCharService char2= new FightCharContract(charImplem2);
+
+		char1.init(100,30,true);
 		char2.init(100,10,false);
 	
 		char1.setNewTechMastered(new CoupDePoing());
@@ -56,14 +64,16 @@ public class Game extends Application{
 
 		//***UTILISATION DE ENGINE CONTRACT***//
 		EngineService engine = new EngineImpl(gui);
-		engine.init(450,700,50,player1,player2);
-		//EngineService contractEngine = new EngineContract(engine);
-		char1.setEngine(engine);
-		char2.setEngine(engine);
-		gui.init(engine);
+		EngineService contractEngine = new EngineContract(engine);
+		contractEngine.init(450,700,50,player1,player2);
+		//char1.setEngine(engine);
+		//char2.setEngine(engine);
+		char1.setEngine(contractEngine);
+		char2.setEngine(contractEngine);
+		gui.init(contractEngine);
 
 		//Thread th = new Thread(contractEngine);
-		Thread th = new Thread(engine);
+		Thread th = new Thread(contractEngine);
 		th.start();
 		Group root = new Group();
 
@@ -87,7 +97,19 @@ public class Game extends Application{
 		  stage.setScene(s);
 		  stage.show();
 		
+		}catch(PreconditionError exp){
+			System.out.println("PRECONDITION");
+				exp.printStackTrace();
+			}catch(PostconditionError exp){
+				System.out.println("POSTCONDITION");
+				exp.printStackTrace();
+			}catch(InvariantError exp){
+				System.out.println("INVARIANT");
+				exp.printStackTrace();
+			}
 	}
+	
+
 	public void handleKey(KeyEvent keyEvent, PlayerService p1, PlayerService p2){
 		String key = String.valueOf(keyEvent.getCharacter());
 		if (key.equals(p1.getKeyLeft()) || key.equals(p1.getKeyRight()) || key.equals(p1.getKeyNeutral())
@@ -106,6 +128,7 @@ public class Game extends Application{
 	}
 	public static void main (String args[]){
 		Application.launch(Game.class,args);
+		
 	}
 	
 }

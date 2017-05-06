@@ -65,13 +65,55 @@ private final EngineService delegate;
 
 
 	@Override
-	public void step(Commande c1, Commande c2) {
-		delegate.step(c1, c2);
+	public void run() {
+		delegate.run();
 	}
 
 
 	@Override
-	public void run() {
-		delegate.run();
+	public int getNbPlayers() {
+		return delegate.getNbPlayers();
+	}
+
+
+	@Override
+	public void updateGame() {
+		 delegate.updateGame();
+		
+	}
+
+
+	@Override
+	public void step() {
+		 delegate.step();
+		
+	}
+
+
+	@Override
+	public void updateAllVictims() {
+		 delegate.updateAllVictims();
+		
+	}
+
+
+	@Override
+	public void updateAllAttackers() {
+		 delegate.updateAllAttackers();
+		
+	}
+
+
+	@Override
+	public void updateAllFrames() {
+		 delegate.updateAllFrames();
+		
+	}
+
+
+	@Override
+	public void setNewPlayer(PlayerService p) {
+		 delegate.setNewPlayer(p);
+		
 	}
 }

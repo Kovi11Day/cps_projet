@@ -38,60 +38,22 @@ public class RectangleHitboxImpl extends HitboxImpl implements RectangleHitboxSe
 	@Override
 	public boolean isCollidesWith(HitboxService h) {
 		if(h instanceof RectangleHitboxImpl){
-			RectangleHitboxImpl rh = (RectangleHitboxImpl) h;
-			double xmax1 = getPositionX() + (width/2.0);
-			double xmin1 = getPositionX() - (width/2.0);
-			double xmax2 = h.getPositionX() + (rh.getWidth()/2.0);
-			double xmin2 = h.getPositionX() - (rh.getWidth()/2.0);
-			//System.out.println(getPositionX()+" "+xmax1);
-			//System.out.println(rh.getPositionX()+" "+xmax2);
-			//System.out.println(xmin1+"  "+xmin2);
-			/*if(xmax1>= xmin2 && xmax1<xmax2){
-				
-				return true;
+			RectangleHitboxImpl h2 = (RectangleHitboxImpl) h;
+			if(h2.getPositionX()-(h2.getWidth()/2.0) >= 
+					getPositionX()-(getWidth()/2.0)+getWidth() ||
+					h2.getPositionX()-(h2.getWidth()/2.0) + h2.getWidth() <=
+					getPositionX()-(getWidth()/2.0) ||
+					h2.getPositionY() >=
+					getPositionY() +getHeight() ||
+					h2.getPositionY()+ h2.getHeight() <= 
+					getPositionY()){
+						return false;
 			}
-			if(xmin2 >= xmin1 && xmin2 < xmax1){
-
-				return true;
-			}*/
-			//formule collision:|distX|<=0.5*(this.width + h.width) ||
-			//|distY|<=0.5*(this.height + h.height)
-			//formule translationcentre: (xcentre,ycentre) = (x,y+0.5*rect.height)
-			
-			//les 2 points egaux
-			if(rh.getPositionX()==this.getPositionX()
-					&& rh.getPositionY()+(rh.height/2.0)==this.getPositionY()+(this.height/2.0)){
-				System.out.println("COLLISION eq");
-
-				return true;
-			}
-			//les 2 points differents
-			if ((rh.getPositionX()!=this.getPositionX())
-					&& (rh.getPositionY()+(rh.height/2.0)!=this.getPositionY()+(this.height/2.0))
-					&& ((Math.abs(rh.getPositionX() - this.getPositionX()) <= (this.getWidth()+rh.getWidth())/2.0)
-					||(Math.abs((rh.getPositionY()+(rh.height/2.0)) - (this.getPositionY()+(this.height/2.0))) 
-								<= ( this.getHeight()+rh.getHeight())/2.0))){
-				System.out.println("NOT COLLINEAR");
-				return true;	
-			}
-			//les 2 points en horizontal
-			if ( rh.getPositionY()+(rh.height/2.0)==this.getPositionY()+(this.height/2.0)
-					&& Math.abs(rh.getPositionX() - this.getPositionX()) <= (this.getWidth()+rh.getWidth())/2.0){
-				System.out.println("COLLISION X: "+(this.getWidth()+rh.getWidth())/2.0);
-				return true;
-			}
-			//les 2 points en vertical
-			if (rh.getPositionX()==this.getPositionX() &&Math.abs((rh.getPositionY()+(rh.height/2.0)) - (this.getPositionY()+(this.height/2.0))) 
-					<= ( this.getHeight()+rh.getHeight())/2.0){
-				System.out.println("COLLISION Y");
-				return true;
-			}
-			
-			return false;
+			return true;
 		}
-		
 		return false;
 	}
+	
 	@Override
 	public boolean isEqualsTo(HitboxService h) {
 		if(h instanceof RectangleHitboxImpl){
@@ -103,6 +65,17 @@ public class RectangleHitboxImpl extends HitboxImpl implements RectangleHitboxSe
 				return false;
 			}
 			return true;
+		}
+		return false;
+	}
+	@Override
+	public boolean isBelongsTo(double x, double y) {
+		if(x>= getPositionX()-(getWidth()/2.0) && 
+				x<= getPositionX()+(getWidth()/2.0) && 
+				y>= getPositionY() &&
+				y<= getPositionY()+getHeight()){
+			return true;
+			
 		}
 		return false;
 	}

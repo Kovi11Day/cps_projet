@@ -10,7 +10,7 @@ public class CoupDePoing implements Tech{
 	@Override
 	public int damage() {
 		
-		return 10;
+		return 50;
 	}
 
 	@Override

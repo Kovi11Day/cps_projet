@@ -18,16 +18,17 @@ public class EngineContract extends EngineDecorator{
 	}
 	
 	public void checkInvariant() {
-		//inv: isGameOver() == \exists i \in [1,2] {getChar(i).isDead()}
 		boolean existsIsDead = false;
 		
-		for(int i=0; i < GlobalVariables.nbPlayersMax; i++){
+		for(int i=0; i < this.getNbPlayers(); i++){
 			if (getChar(i).isDead())
 				existsIsDead = true;
 		}
 		
+		//inv: isGameOver() == \exists i:int \in [1,getNbPlayers()] {getChar(i).isDead()}
 		if (isGameOver() != existsIsDead)
-			throw new InvariantError("EngineContract: isGameOver() ");
+			throw new InvariantError("EngineContract: inv:isGameOver() != existsIsDead");
+		
 
 	}
 	
@@ -71,24 +72,33 @@ public class EngineContract extends EngineDecorator{
 			throw new PostconditionError("EngineContract:post: getWidth() = w");
 		}
 		
-		//post: getPlayer(1) = p1
-		if (getPlayer(1) != p1){
-			throw new PostconditionError("EngineContract:post: getPlayer(1) = p1");
+		//post: getPlayer(0) = p1
+		if (getPlayer(0) != p1){
+			throw new PostconditionError("EngineContract:post: getPlayer(0) = p1");
+		}
+
+		//post: getPlayer(1) = p2
+		if (getPlayer(1) != p2){
+			throw new PostconditionError("EngineContract:post: getPlayer(1) = p2");
 		}
 		
-		//post: getPlayer(2) = p2
-		if (getPlayer(2) != p2){
-			throw new PostconditionError("EngineContract:post: getPlayer(2) = p2");
+		//post: getCharacter(0).getPositionX() = w//2 - s//2
+		//TODO: adding acceptable error
+
+		if (getChar(0).getPositionX() -( w/2 - s/2)>1){
+			throw new PostconditionError("EngineContract:post: getCharacter(0).getPositionX() = w//2 - s//2");
 		}
 		
-		//post: getCharacter(1).getPositionX() = w//2 - s//2
-		if (getChar(1).getPositionX() != w/2 - s/2){
-			throw new PostconditionError("EngineContract:post: getCharacter(1).getPositionX() = w//2 - s//2");
+		//post: getChar(1).getPositionX() = w//2 + s//2
+		//TODO: adding acceptable error
+
+		if (getChar(1).getPositionX() - (w/2 + s/2)>1){
+			throw new PostconditionError("EngineContract:post: getChar(1).getPositionX() = w//2 + s//2");
 		}
 		
-		//post: getChar(2).getPositionX() = w//2 + s//2
-		if (getChar(2).getPositionX() != w/2 + s/2){
-			throw new PostconditionError("EngineContract:post: getChar(2).getPositionX() = w//2 + s//2");
+		//post: getChar(0).getPositionY() = 0
+		if (getChar(0).getPositionY() != 0){
+			throw new PostconditionError("EngineContract:post: getChar(0).getPositionY() = 0");
 		}
 		
 		//post: getChar(1).getPositionY() = 0
@@ -96,27 +106,29 @@ public class EngineContract extends EngineDecorator{
 			throw new PostconditionError("EngineContract:post: getChar(1).getPositionY() = 0");
 		}
 		
-		//post: getChar(2).getPositionY() = 0
-		if (getChar(2).getPositionY() != 0){
-			throw new PostconditionError("EngineContract:post: getChar(2).getPositionY() = 0");
+		//post: getChar(0).isRightFace()
+		if (!getChar(0).isRightFace()){
+			throw new PostconditionError("EngineContract:post:getChar(0).isRightFace()");
 		}
 		
-		//post: getChar(1).isRightFace()
-		if (!getChar(1).isRightFace()){
-			throw new PostconditionError("EngineContract:post:getChar(1).isRightFace()");
-		}
-		
-		//post: !getChar(2).isRightFace()
+		//post: !getChar(1).isRightFace()
 		if (getChar(1).isRightFace()){
-			throw new PostconditionError("EngineContract:post:!getChar(2).isRightFace()");
+			throw new PostconditionError("EngineContract:post:!getChar(1).isRightFace()");
 		}
 		
+		//post: getSpace() = s
+		if(getSpace() != s)
+			throw new PostconditionError("EngineContract:post:getSpace() != s");
+		
+		//post: getNbPlayers() = 2;
+		if(getNbPlayers() != 2)
+			throw new PostconditionError("EngineContract:post:getNbPlayers() != 2");
+
 	}
-	
-	
 	 
 	@Override
 	public int getHeight() {
+	
 		return super.getHeight();
 	
 	}
@@ -131,9 +143,9 @@ public class EngineContract extends EngineDecorator{
 
 	@Override
 	public FightCharService getChar(int i) {
-		// pre:i  \in [1,2]
-		if (i < 1 || i > GlobalVariables.nbPlayersMax)
-			throw new PreconditionError("EngineContract: pre:i  in [1,2]");
+		// pre:i \in [1,getNbPlayers()]
+		if (i < 0 || i >= getNbPlayers())
+			throw new PreconditionError("EngineContract:pre:i in [1,getNbPlayers()]");
 		
 		return super.getChar(i);
 	}
@@ -141,9 +153,10 @@ public class EngineContract extends EngineDecorator{
 
 	@Override
 	public PlayerService getPlayer(int i) {
-		// pre:i  \in [1,2]
-				if (i < 1 || i > GlobalVariables.nbPlayersMax)
-					throw new PreconditionError("EngineContract: pre:i  in [1,2]");
+		// pre:i \in [1,getNbPlayers()]
+				if (i < 0 || i > getNbPlayers() -1)
+					throw new PreconditionError("EngineContract:pre:i in [1,getNbPlayers()]");
+				
 		return super.getPlayer(i);
 	}
 
@@ -154,35 +167,132 @@ public class EngineContract extends EngineDecorator{
 		return super.isGameOver();
 	}
 
+	@Override
+	public void run() {
+		super.run();
+	}
+
 
 	@Override
-	public void step(Commande c1, Commande c2) {
-		//inv@pre
-		checkInvariant();
-				
-		// pre: !isGameOver()
-		if (isGameOver())
-			throw new PreconditionError("EngineContract: pre:!isGameOver()");
+	public int getNbPlayers() {
+		return super.getNbPlayers();
+	}
 
-		//captures
-		CharacterService getChar1_atPre = (CharacterService)getChar(1).clone();
-		CharacterService getChar2_atPre = (CharacterService)getChar(2).clone();
-		getChar1_atPre.step(c1);
-		getChar2_atPre.step(c2);
+
+	@Override
+	public void updateGame() {
+		//inv@pre
+		this.checkInvariant();
+		
+		// pre: !isGameOver() 
+		if(isGameOver() )
+			throw new PreconditionError("isGameOver()");
 
 		//run
-		super.step(c1, c2);
-				
-		//inv@post
-		checkInvariant();
-		
-		// post: getChar(1) = getChar(1)@pre.step(c1)
-		if(!getChar(1).equals( getChar1_atPre))
-			throw new PostconditionError("EngineContract: getChar(1) = getChar(1)@pre.step(c1)");
+		 super.updateGame();
+		 
 
-		// post: getChar(2) = getChar(2)@pre.step(c2)
-				if(!getChar(2).equals( getChar2_atPre))
-					throw new PostconditionError("EngineContract: getChar(2) = getChar(2)@pre.step(c2)");
+		//inv@pre
+		this.checkInvariant();
+		
 	}
+
+
+	@Override
+	public void step() {
+		//inv@pre
+		this.checkInvariant();
+		
+		// pre: !isGameOver() 
+		if(isGameOver() )
+			throw new PreconditionError("isGameOver()");
+
+		//run
+		 super.step();
+		 
+
+		//inv@pre
+		this.checkInvariant();
+		
+	}
+
+
+	@Override
+	public void updateAllVictims() {
+		//inv@pre
+		this.checkInvariant();
+		
+		// pre: !isGameOver() 
+		if(isGameOver() )
+			throw new PreconditionError("isGameOver()");
+
+		//run
+		 super.updateAllVictims();
+		 
+
+		//inv@pre
+		this.checkInvariant();		
+	}
+
+
+	@Override
+	public void updateAllAttackers() {
+		//inv@pre
+		this.checkInvariant();
+		
+		// pre: !isGameOver() 
+		if(isGameOver() )
+			throw new PreconditionError("isGameOver()");
+
+		//run
+		 super.updateAllAttackers();
+		 
+
+		//inv@pre
+		this.checkInvariant();		
+	}
+
+
+	@Override
+	public void updateAllFrames() {
+		//inv@pre
+		this.checkInvariant();
+		
+		// pre: !isGameOver() 
+		if(isGameOver() )
+			throw new PreconditionError("isGameOver()");
+
+		//run
+		 super.updateAllFrames();
+		 
+
+		//inv@pre
+		this.checkInvariant();		
+	}
+
+
+	@Override
+	public void setNewPlayer(PlayerService p) {
+		//inv@pre
+		this.checkInvariant();
+		
+		// pre: !isGameOver() 
+		if(isGameOver() )
+			throw new PreconditionError("isGameOver()");
+
+		//captures
+		int getNbPlayers_atPre = getNbPlayers();
+		//run
+		 super.setNewPlayer(p);
+		 
+		//post: getNbPlayers() = getNbPlayers()@pre + 1;
+		 if (getNbPlayers() != getNbPlayers_atPre + 1)
+				throw new PostconditionError("getNbPlayers() != getNbPlayers_atPre + 1");
+
+		//inv@pre
+		this.checkInvariant();				
+	}
+
+	
 	
 }

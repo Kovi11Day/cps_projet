@@ -8,39 +8,25 @@ import services.HitboxService;
 import services.RectangleHitboxService;
 
 public class CharacterImpl implements CharacterService{
-	//private int positionX;
-	//private int positionY;
 	protected EngineService engine;
-	//protected HitboxService charBox;
 	protected RectangleHitboxService charBox;
-
-	protected int life = 100;
-	protected int maxLife = 100;//
+	protected int life;
+	protected int maxLife;
 	protected int speed;
 	protected boolean rightFace;
-	protected boolean dead;
-//	private ProgressBar pb; //
-	public CharacterImpl(/*int l, int s, boolean f, /*EngineService e*/) {
-		//this.maxLife = l;
-	//	this.pb = new ProgressBar();
-		//pb.setMaxSize(100, 40);
-		//this.pb.setProgress(((float)1));
-	//	this.getChildren().add(pb);
-		//init(l,s,f);
-	}
+	protected boolean ready;
 
 	@Override
-	public void init(int l, int s, boolean f/*, EngineService e*/) {
+	public void init(int l, int s, boolean f) {
 		this.life = l;
 		this.speed = s;
 		this.rightFace = f;
 		this.maxLife = l; 
-		
-		//***UTILISATION DE HITBOX CONTRACT***//
-		RectangleHitboxService hb = new RectangleHitboxImpl();
-		//hb.init(0, 0, 20, 20);
+		this.ready = false;
+		//TODO: UTILISATION de RectangleHitboxContract
+		RectangleHitboxService hb = new RectangleHitboxImpl();//a renommer en hbImplem
+		//RectangleHitboxContract hb = new  RectangleHitboxContract(hbImplem);
 		hb.init(0, 0);
-		//this.charBox = new HitboxContract(hb);
 		this.charBox = hb;
 	}
 
@@ -48,25 +34,20 @@ public class CharacterImpl implements CharacterService{
 	public double getPositionX() {
 		return this.charBox.getPositionX();
 	}
-	/*ProgressBar getProgressBar(){ //---//
-		return this.pb;
-	}*/
+
 	@Override
 	public double getPositionY() {
-		//return this.charBox.getPositionY() - this.getEngine().getHeight();
 		return this.charBox.getPositionY();
 	}
-	//@Override
+	
 	public int getHeight() {
-		
 		return this.getCharBox().getHeight();
 	}
 
-	//@Override
 	public int getWidth() {
-		
 		return this.getCharBox().getWidth();
 	}
+	
 	@Override
 	public EngineService getEngine() {
 		
@@ -100,31 +81,33 @@ public class CharacterImpl implements CharacterService{
 	@Override
 	public boolean isDead() {
 		
-		return this.dead;
+		return this.life <= 0;
 	}
 	
+	@Override
+	public boolean isReady() {
+		return this.ready;
+	}
+	
+	//pas un operateur par rapport a spec, seulement utile pour l'implem
 	public void updateLife(int l){
 		this.life = l;
-		//this.pb.setProgress(((float)l/(float)life));
-
 	}
-	public void moveTo(double d, double e){
-		//this.getCharBox().moveTo(x, y + this.getEngine().getHeight());
-		this.getCharBox().moveTo(d, e );
-
+	
+	//pas un operateur par rapport a spec, seulement utile pour l'implem
+	public void moveTo(double x, double y){
+		this.getCharBox().moveTo(x, y);
 	}
 
 	@Override
 	public void moveLeft() {		
-		System.out.println(this.rightFace + ": moved left");
 
 		boolean collision = false;
 		
 		//detecter future collision
 		moveTo(getPositionX()-getSpeed(), getPositionY());
 		
-		for (int i = 0; i < GlobalVariables.nbPlayersMax; i++){
-
+		for (int i = 0; i < engine.getNbPlayers(); i++){
 			if (getEngine().getChar(i) != this && getCharBox().isCollidesWith(getEngine().getChar(i).getCharBox()) ){
 				collision = true; 
 			}
@@ -134,11 +117,9 @@ public class CharacterImpl implements CharacterService{
 		
 		if (!collision){
 			if (getPositionX() >= getSpeed())
-				/*this.charBox.*/moveTo(getPositionX()-getSpeed(), getPositionY());
-				//this.positionX -= getSpeed();
+				moveTo(getPositionX()-getSpeed(), getPositionY());
 			else
-				/*this.charBox.*/moveTo(0, getPositionY());
-				//this.positionX = 0;
+				moveTo(0, getPositionY());
 		}
 	}
 
@@ -146,24 +127,24 @@ public class CharacterImpl implements CharacterService{
 	public void moveRight() {
 
 		boolean collision = false;
+		
 		//detecter future collision
 		moveTo(getPositionX()+getSpeed(), getPositionY());
 		
-		for (int i = 0; i < GlobalVariables.nbPlayersMax; i++){
+		for (int i = 0; i < engine.getNbPlayers(); i++){
 			if (getEngine().getChar(i) != this && getCharBox().isCollidesWith(getEngine().getChar(i).getCharBox()) ){
 				collision = true; 
 			}
 		}
+		
 		//retouner a l'ancien position
 		moveTo(getPositionX()-getSpeed(), getPositionY());
 
 		if (!collision){
 			if (getPositionX() + getSpeed() <= this.engine.getWidth())
-				/*this.charBox.*/moveTo(getPositionX()+getSpeed(), getPositionY());
-				//this.positionX += getSpeed();
+				moveTo(getPositionX()+getSpeed(), getPositionY());
 			else
-				//this.positionX = GlobalVariables.width;
-				/*this.charBox.*/moveTo(this.engine.getWidth(),getPositionY());
+				moveTo(this.engine.getWidth(),getPositionY());
 		}
 		
 	}
@@ -183,44 +164,20 @@ public class CharacterImpl implements CharacterService{
 	}
 
 	@Override
-	public CharacterService clone() {
-		//CharacterService clone = (CharacterService) super.clone();
-		
-		CharacterService clone = new CharacterImpl();
-		clone.init(life, speed,rightFace/*, engine*/);
-		//clone.charBox = charBox.clone();
-		//clone.dead =dead;
-		//clone.positionX = positionX;
-		//clone.positionY = positionY;
-		return clone;
-	}
-
-	@Override
-	public boolean equals(CharacterService c) {
-		if (this.dead != c.isDead() || this.rightFace != c.isRightFace() || !this.charBox.equals(c.getCharBox())
-				|| this.engine!=c.getEngine() || this.life!=c.getLife()/* ||this.positionX!=c.getPositionX() ||this.positionY!=c.getPositionY()*/
-				||this.speed != c.getSpeed())
-			return false;
-		return true;
-	}
-	
-	@Override
-	//TODO:initial positions of rectangles
 	public void setEngine(EngineService engine) {
-		this.engine = engine;System.out.println("carbox before:set engine"  +this.charBox.getPositionX() + ","  +this.charBox.getPositionY());
+		//TODO: add life bar of new character
+		this.engine = engine;
+		this.ready = true;
+		
 		if (this.rightFace){
 			this.charBox.moveTo(engine.getWidth()/2-engine.getSpace()/2, 0 );
-			
 		}
 		else{
 			this.charBox.moveTo(engine.getWidth()/2+engine.getSpace()/2, 0);
-		  	//pb.setLayoutX(engine.getWidth() - pb.getMaxWidth());
-
 		}
-		//---p1.getChar().getCharBox().moveTo(w/2-s/2, 0);
-		//---p2.getChar().getCharBox().moveTo(w/2+s/2, 0);
-	this.engine = engine;System.out.println("carbox after engine"  +this.charBox.getPositionX() + ","  +this.charBox.getPositionY());
-
+		 
 	}
+
+
 
 }

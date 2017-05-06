@@ -1,20 +1,28 @@
 package contracts;
 
-import services.CharacterService;
 import services.Commande;
 import services.EngineService;
+import services.FightCharService;
 import services.GlobalVariables;
 import services.RectangleHitboxService;
-import decorators.CharacterDecorator;
+import decorators.FightCharDecorator;
 
-public class CharacterContract extends CharacterDecorator {
+public class CharacterContract extends FightCharDecorator {
 
-	public CharacterContract(CharacterService delegate) {
+	public CharacterContract(FightCharService delegate) {
 		super(delegate);
 	}
 
 	
 	public void checkInvariant() {
+		//inv : getWidth() = getCharBox().getWidth()
+		if (getWidth() != getCharBox().getWidth())
+			throw new InvariantError("CharacterContract: getWidth() != getCharBox().getWidth() ");
+
+		//inv : getHeight() = getCharBox().getHeight()
+		if (getHeight() != getCharBox().getHeight())
+			throw new InvariantError("CharacterContract: getHeight() != getCharBox().getHeight()");
+		
 		//inv : getPositionX() = getCharBox().getPositionX()
 		if (getPositionX() != getCharBox().getPositionX())
 			throw new InvariantError("CharacterContract: getPositionX() = getCharBox().getPositionX() ");
@@ -23,13 +31,13 @@ public class CharacterContract extends CharacterDecorator {
 		if (getPositionY() != getCharBox().getPositionY())
 			throw new InvariantError("CharacterContract: getPositionY() = getCharBox().getPositionY()");
 		
-		//inv: getPositionX() > 0 && getPositionX() < getEngine().getWidth()
-		if (getPositionX() <= 0 || getPositionX() >= getEngine().getWidth())
-			throw new InvariantError("CharacterContract: getPositionX() > 0 && getPositionX() < getEngine().getWidth()");
+		//inv: getPositionX() >= 0 && getPositionX() <= getEngine().getWidth()
+		if (getPositionX() < 0 || getPositionX() > getEngine().getWidth())
+			throw new InvariantError("CharacterContract: getPositionX() < 0 || getPositionX() > getEngine().getWidth()");
 		
 		//inv: getPositionY() >= 0 && getPositionY() < getEngine().getHeight()
 		if (getPositionY() < 0 || getPositionY() >= getEngine().getHeight())
-			throw new InvariantError("CharacterContract: getPositionY() > 0 && getPositionY() < getEngine().getHeight()");
+			throw new InvariantError("CharacterContract: getPositionY() < 0 && getPositionY() >= getEngine().getHeight()");
 		
 		//inv: isDead() = !(getLife() > 0)
 		if (isDead() == (getLife() > 0))
@@ -43,28 +51,23 @@ public class CharacterContract extends CharacterDecorator {
 		//inv@pre
 		checkInvariant();
 		
-		//pre: l > 0 && s:int \in [1,4]  
-		if (l <= 0 || s < 1 || s > 4)
-			throw new PreconditionError("CharacterContract:l > 0 && s:int in [1,4] ");
+		//pre: l > 0 && s >= 0 
+		if (l <= 0 || s < 0)
+			throw new PreconditionError("CharacterContract:l > 0 && s >= 0 ");
 		
 		//run 
-		super.init(l, s, f/*, e*/);
+		super.init(l, s, f);
 		
 		//inv@post
 		checkInvariant();
 
-		//post: getLife() = l && getSpeed() = s && isRightFace() = f && getEngine() = e 
-		/*-----if (getLife() != l || getSpeed() != s || isRightFace() != f || getEngine() != e )
-			throw new PostconditionError("CharacterContract:getLife() = l && getSpeed() = s && isRightFace() = f && getEngine() = e ");*/
+		//post: getLife() = l && getSpeed() = s && isRightFace() = f && !isReady()
+		if (getLife() != l || getSpeed() != s || isRightFace() != f || isReady() )
+			throw new PostconditionError("CharacterContract:getLife() = getLife() != l || getSpeed() != s || isRightFace() != f || isReady()");
 		
 		//post: \exists h:HitBox {getCharBox() = h}
-		boolean ok = false;
-		for (int i = 1; i <= 2 ; i++)
-			if (getCharBox() == getEngine().getChar(i))
-				ok = true;
-		if (!ok)
-			throw new PostconditionError("CharacterContract:exists h:HitBox {getCharBox() = h");
-
+		if(getCharBox() == null)
+			throw new PostconditionError("getCharBox() == null");
 	}
 	
 	@Override
@@ -133,12 +136,13 @@ public class CharacterContract extends CharacterDecorator {
 		/*post: if \exists getEngine().getChar(i) != this && getHitBox().isCollidesWith(getEngine().getChar(i).getHitBox())
 		 * 			then getPositionX() = getPositionX()@pre
 		 * 		else 
-		 * 			if getPositionX()@pre + getSpeed() <= maxX
-		 * 				then getPosition() = getPositionX()@pre + getSpeed()
+		 * 			if getPositionX()@pre >= getSpeed()
+		 * 				then getPositionX() = getPositionX()@pre - getSpeed()
 		 * 			else
-		 * 				getPositionX() = maxX*/
+		 * 				getPositionX() = 0
+		 */
 		boolean collision = false;
-		for (int i = 1; i <= GlobalVariables.nbPlayersMax; i++){
+		for (int i = 0; i <= getEngine().getNbPlayers(); i++){
 			if (getEngine().getChar(i) != this && getCharBox().isCollidesWith(getEngine().getChar(i).getCharBox()) ){
 				collision = true; 
 			}
@@ -146,14 +150,14 @@ public class CharacterContract extends CharacterDecorator {
 		
 		if (collision){
 			if (getPositionX() != getPositionX_atPre)
-				throw new PostconditionError("CharacterContract: post1: positionX unchanged");
+				throw new PostconditionError("CharacterContract: getPositionX() != getPositionX_atPre");
 		}else{
 			if (getPositionX_atPre >= getSpeed()){
 				if (getPositionX() != getPositionX_atPre - getSpeed()){
-					throw new PostconditionError("CharacterContract: post1: positionX movedLeft");
+					throw new PostconditionError("CharacterContract: getPositionX() != getPositionX_atPre - getSpeed()");
 			}else
 				if (getPositionX() != 0)
-					throw new PostconditionError("CharacterContract: post1: positionX extreme left");
+					throw new PostconditionError("CharacterContract: getPositionX() != 0");
 		}
 		}
 		
@@ -185,12 +189,13 @@ public class CharacterContract extends CharacterDecorator {
 		/*post: if \exists getEngine().getChar(i) != this && getHitBox().isCollidesWith(getEngine().getChar(i).getHitBox())
 		 * 			then getPositionX() = getPositionX()@pre
 		 * 		else 
-		 * 			if getPositionX()@pre + getSpeed() <= maxX
+		 * 			if getPositionX()@pre + getSpeed() <= engine().getWidth()
 		 * 				then getPosition() = getPositionX()@pre + getSpeed()
 		 * 			else
-		 * 				getPositionX() = maxX*/
+		 * 				getPositionX() = engine().getWidth()
+		 */
 		boolean collision = false;
-		for (int i = 1; i <= GlobalVariables.nbPlayersMax; i++){
+		for (int i = 0; i <= getEngine().getNbPlayers(); i++){
 			if (getEngine().getChar(i) != this && getCharBox().isCollidesWith(getEngine().getChar(i).getCharBox()) ){
 				collision = true; 
 			}
@@ -200,11 +205,11 @@ public class CharacterContract extends CharacterDecorator {
 			if (getPositionX() != getPositionX_atPre)
 				throw new PostconditionError("CharacterContract: post1: positionX unchanged");
 		}else{
-			if (getPositionX_atPre + getSpeed() <= GlobalVariables.width){
+			if (getPositionX_atPre + getSpeed() <= getEngine().getWidth()){
 				if (getPositionX() != getPositionX_atPre + getSpeed()){
 					throw new PostconditionError("CharacterContract: post1: positionX moved");
 			}else
-				if (getPositionX() != GlobalVariables.width)
+				if (getPositionX() != getEngine().getWidth())
 					throw new PostconditionError("CharacterContract: post1: positionX extreme right");
 		}
 		}
@@ -249,38 +254,37 @@ public class CharacterContract extends CharacterDecorator {
 		checkInvariant();
 		
 		//captures 
-		double getPositionX_atPre = getPositionX();
-		CharacterService this_atPre = (CharacterService)this.clone();
+		//double getPositionX_atPre = getPositionX();
+		//CharacterService this_atPre = (CharacterService)this.clone();
 
 
-//pre
-if (isDead())
-		throw new PostconditionError("CharacterContract: !isDead");
+		//pre: !isDead() && isReady()
+		if (isDead() || !isReady())
+			throw new PostconditionError("CharacterContract: !isDead");
 
-//run 
-super.step(c);
+		//run 
+		super.step(c);
 			
-//inv@post
-checkInvariant();
+		//inv@post
+		checkInvariant();
 					
-//post: step(Commande.LEFT) = moveLeft()
-if (c == Commande.LEFT){
-		this_atPre.moveLeft();
-		if (getPositionX() != this_atPre.getPositionX())
-			throw new PostconditionError("CharacterContract: step(Commande.LEFT) = moveLeft()");
-}
-//post:step(Commande.RIGHT) = moveRight()
-if (c == Commande.RIGHT){
-		this_atPre.moveRight();
-		if (getPositionX() != this_atPre.getPositionX())
-			throw new PostconditionError("CharacterContract: step(Commande.RIGHT) = moveRight()");
-}
+	}
+	
+	@Override
+	public void setEngine(EngineService engine) {
+		//inv@pre
+		checkInvariant();
+		
+		//pre: !isReady()
+		if (isReady())
+			throw new PostconditionError("CharacterContract: isReady()");
+		
+		super.setEngine(engine);
+		
+		//post: isReady()
+		if (!isReady())
+			throw new PostconditionError("CharacterContract: isReady()");
 
-//post:step(Commande.NEUTRAL) = this
-if(c == Commande.NEUTRAL){
-		if (getPositionX() != this_atPre.getPositionX())
-			throw new PostconditionError("CharacterContract: step(Commande.NEUTRAL) = this");
-}
 	}
 		
 }

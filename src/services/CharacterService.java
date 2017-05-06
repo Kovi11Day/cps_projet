@@ -4,27 +4,30 @@ public interface CharacterService {
 	/* Observators */
 	double getPositionX();
 	double getPositionY();
+	int getWidth();
+	int getHeight();
 	EngineService getEngine();
-	//HitboxService getCharBox ();
 	RectangleHitboxService getCharBox ();
-
 	int getLife();
 	int getSpeed();
 	boolean isRightFace();
 	boolean isDead();
-	
+	boolean isReady();
+
 	/* Invariants */
+	//inv : getWidth() = getCharBox().getWidth()
+	//inv : getHeight() = getCharBox().getHeight()
 	//inv : getPositionX() = getCharBox().getPositionX()
 	//inv : getPositionY() = getCharBox().getPositionY()
-	//inv: getPositionX() > 0 && getPositionX() < getEngine().getWidth()
-	//inv: getPositionY() > 0 && getPositionY() < getEngine().getHeight()
+	//inv: getPositionX() >= 0 && getPositionX() <= getEngine().getWidth()
+	//inv: getPositionY() >= 0 && getPositionY() < getEngine().getHeight()
 	//inv: isDead() = !(getLife() > 0)
 	
 	/* Initializers */
-	//pre: l > 0 && s:int \in [1,4]  
-	//post: getLife() = l && getSpeed() = s && isRightFace() = f && getEngine() = e 
+	//pre: l > 0 && s>= 0  
+	//post: getLife() = l && getSpeed() = s && isRightFace() = f && !isReady()
 	//post: \exists h:HitBox {getCharBox() = h}
-	public void init(int l, int s, boolean f/*, EngineService e*/);
+	public void init(int l, int s, boolean f);
 	
 	/* Operators */
 	
@@ -44,10 +47,10 @@ public interface CharacterService {
 	/*post: if \exists getEngine().getChar(i) != this && getHitBox().isCollidesWith(getEngine().getChar(i).getHitBox())
 	 * 			then getPositionX() = getPositionX()@pre
 	 * 		else 
-	 * 			if getPositionX()@pre + getSpeed() <= maxX
+	 * 			if getPositionX()@pre + getSpeed() <= engine().getWidth()
 	 * 				then getPosition() = getPositionX()@pre + getSpeed()
 	 * 			else
-	 * 				getPositionX() = maxX
+	 * 				getPositionX() = engine().getWidth()
 	 * 
 	 * post: isRightFace() = isRightFace()@pre && getLife() = getLife()@pre
 	 * post: getPositionY() = getPositionY()@pre
@@ -59,16 +62,15 @@ public interface CharacterService {
 	 */
 	public void switchSide();
 	
-	/* pre: !isDead()
+	/* pre: !isDead() && isReady()
 	 * post: step(Commande.LEFT) = moveLeft()
 	 * 		step(Commande.RIGHT) = moveRight()
 	 * 		step(Commande.NEUTRAL) = this
 	 */
 	public void step(Commande c);
 	
+	//pre: !isReady()
+	//post: isReady()
 	public void setEngine(EngineService engine);
-	public CharacterService clone();
-	public boolean equals(CharacterService c);
-	public int getWidth();
-	public int getHeight();
+
 }

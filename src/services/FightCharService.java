@@ -4,8 +4,8 @@ public interface FightCharService extends CharacterService{
 	
 	/* Observators */
 	boolean isBlocking();
-	boolean isBlockStunned();
-	boolean isHitSunned();
+	boolean isBlockStunned();	
+	boolean isHitStunned();
 	boolean isTeching();
 	
 	// pre: isTeching()
@@ -33,8 +33,9 @@ public interface FightCharService extends CharacterService{
 	
 /* Invariants */
 	
-	//inv : isTeching() == !(isBlocking() 
-	//|| isBlockStunned() || isHitStunned() )
+	/*inv : isTeching() ==> (!isBlocking() 
+	 * 		&& !isBlockStunned() && !isHitStunned() )
+	 */
 	
 	//!(isBlockStunned() && isHitStunned() )
 	
@@ -55,8 +56,8 @@ public interface FightCharService extends CharacterService{
 	//isHitStunned() == getHStunFrameCounter() >0
 	
 	//isTeching() && isInHitFrame() ==> (
-	// (getTech().getRFrame() < getTechFrameCounter()) &&
-	// ( getTechFrameCounter() >= (getTech().getRFrame() + getTech().getHFrame()) )
+	// (getTech().rframe() < getTechFrameCounter()) &&
+	// ( getTechFrameCounter() <= (getTech().rframe() + getTech().hframe()) )
 	// )
 	
 	/* Initializers */
@@ -64,38 +65,29 @@ public interface FightCharService extends CharacterService{
 	//pre: l>0 && s>0
 	
 	//post: 
-	//isBlockStunned() = false
-	//isHitStunned() = false
+	//getTechFrameCounter() = 0
 	//getBStunFrameCounter() =0
 	//getHStunFrameCounter() =0
-	//geNbTechMastered()>0
-	// \forAll i \in [1,getNbTechMastered()] 
-	// \exist t:Tech ,getTechMastered()= t
-	
-	public void init(int l,int s,boolean f,EngineService e);
+	//isTechHasAlreadyHit() = false
+	//isBlocking() = false
+	//getNbTechMastered = 0
+	public void init(int l,int s,boolean f);
 	
 	/* Operators */
-	//pre:\exist i \in [1,getNbTechMastered()], getTechMastered(i) = t
-	//post:
-	//isBlocking() =false
-	//getTechBox().equals(t.getHitBox(getPositionX(),getPositionY())
-	//getTech() = t
-	//isTechhasAlreadyHit() = false
-	//getTechFrameCounter() = t.getSFrame()+t.getHFrame()+t.getRFrame()
-	//getBStunFrameCounter()= getBStunFrameCounter()@pre
-	//getHStunFrameCounter() = getHStunFrameCounter()@pre
-	//getOtherFightChar() = getOtherFightChar()@pre
-	//getNbTechMastered() = getNbTechMastered()@pre
-	//\exist i \in [1,getNbTechMastered()], getTechMastered(i)= getTechMastered(i)@pre
 	
-
-
-	//TODO:inv + pre + post for each operator
+	
+	//pre:\exist i \in [1,getNbTechMastered()], getTechMastered(i) = t
+	//post:getTechBox().equals(t.getHitBox(getPositionX()@pre,getPositionY()@pre)
+	//post:getTech() = t
+	//post:isTechhasAlreadyHit() = false
+	//post:getTechFrameCounter() = t.sframe()+t.hframe()+t.rframe()
+	//post:getOtherFightChar() = getOtherFightChar()@pre
+	//post:getNbTechMastered() = getNbTechMastered()@pre
+	//post: \forall i \in [1,getNbTechMastered()], getTechMastered(i)= getTechMastered(i)@pre
 	void startTech(Tech t);
 	
-	//pre:!dead() && isControllable()
+	//pre:!dead() && isReady()
 	//post: iBlocking() == c.equals(bloque)
-	//
 	public void step(Commande c);
 
 	//void updateStatus();

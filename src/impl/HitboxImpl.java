@@ -37,7 +37,7 @@ public abstract class HitboxImpl implements HitboxService{
 		//return (int) (y-box.getHeight());
 	}
 
-	@Override
+	/*@Override
 	public boolean isBelongsTo(double x, double y) {
 		// TODO Auto-generated method stub
 		return false;
@@ -48,7 +48,7 @@ public abstract class HitboxImpl implements HitboxService{
 
 	@Override
 	public abstract boolean isEqualsTo(HitboxService h);
-
+*/
 	@Override
 	public void init(double x, double y) {
 		this.x=x;
