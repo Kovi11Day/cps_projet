@@ -146,6 +146,9 @@ public class FightCharImpl  extends CharacterImpl implements FightCharService{
 		case COUP_DE_TETE: 
 			this.startTech(this.getTechMastered(2)); 
 		break;
+		case BLOCK: 
+			this.isBlocking = true;
+		break;
 		}
 		
 		}

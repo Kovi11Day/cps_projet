@@ -87,6 +87,8 @@ public class PlayerImpl implements PlayerService {
 				result = Commande.COUP_DE_POING;
 			else if (sequenceKeys.get(0).equals(this.coupTete))
 				result = Commande.COUP_DE_TETE;
+			else if (sequenceKeys.get(0).equals(this.keyNeutral))
+				result = Commande.BLOCK;
 			}
 		}catch(NullPointerException e){}
 		

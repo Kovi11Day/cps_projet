@@ -97,7 +97,17 @@ public class Gui extends Parent{
 		//players.get(i).figure.setY(0);
 
 		players.get(i).lifeBar.setProgress((engine.getChar(i).getLife()*1.0)/(players.get(i).maxLife*1.0));
-
+		if (engine.getChar(i).isBlocking()){
+			if(i == 0)
+					players.get(i).techOutline.setFill(Color.CRIMSON);
+			else
+				players.get(i).techOutline.setFill(Color.BLUEVIOLET);
+		}else{
+			if(i == 0)
+				players.get(i).techOutline.setFill(Color.RED);
+			else
+				players.get(i).techOutline.setFill(Color.BLUE);
+		}
 		//update techBox (if necessary)
 		if (engine.getChar(i).isInHitFrame()){
 			//update player

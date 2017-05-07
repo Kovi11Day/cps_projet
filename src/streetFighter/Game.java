@@ -43,8 +43,10 @@ public class Game extends Application{
 		char1.init(100,30,true);//life, speed, faceRight
 		char2.init(100,10,false);//life, speed, faceRight
 	
+		for(int i = 0; i < 3; i++){
 		char1.setNewTechMastered(new CoupDePoing());
 		char2.setNewTechMastered(new CoupDePoing());
+		}
 		char1.setOtherFightChar(char2);
 		char2.setOtherFightChar(char1);
 

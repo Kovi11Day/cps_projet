@@ -13,4 +13,5 @@ public enum Commande {
 	UPRIGHT,
 	DOWNLEFT,
 	DOWNRIGHT,
+	BLOCK,
 }
