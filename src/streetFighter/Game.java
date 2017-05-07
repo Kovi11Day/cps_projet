@@ -40,8 +40,8 @@ public class Game extends Application{
 		FightCharService char1= new FightCharContract(charImplem1);
 		FightCharService char2= new FightCharContract(charImplem2);
 
-		char1.init(100,30,true);
-		char2.init(100,10,false);
+		char1.init(100,30,true);//life, speed, faceRight
+		char2.init(100,10,false);//life, speed, faceRight
 	
 		char1.setNewTechMastered(new CoupDePoing());
 		char2.setNewTechMastered(new CoupDePoing());
@@ -54,8 +54,6 @@ public class Game extends Application{
 		//***UTILISATION DE PLAYER CONTRACT***//
 		PlayerService player1 = new PlayerImpl();
 		PlayerService player2 = new PlayerImpl();
-		//player1.init(contractChar1,"q","s","d");
-		//player2.init(contractChar2,"k","l","m");
 		player1.init(char1,"q","s","d","a","z","e","w","x","c","&","é","\"");
 		player2.init(char2,"k","l","m","i","o","p",",",";",":","!","ç","à");
 
@@ -65,16 +63,14 @@ public class Game extends Application{
 		//***UTILISATION DE ENGINE CONTRACT***//
 		EngineService engine = new EngineImpl(gui);
 		EngineService contractEngine = new EngineContract(engine);
-		contractEngine.init(450,700,50,player1,player2);
+		contractEngine.init(450,700,70,player1,player2);//width height space
 		//char1.setEngine(engine);
 		//char2.setEngine(engine);
 		char1.setEngine(contractEngine);
 		char2.setEngine(contractEngine);
 		gui.init(contractEngine);
 
-		//Thread th = new Thread(contractEngine);
-		Thread th = new Thread(contractEngine);
-		th.start();
+
 		Group root = new Group();
 
 		root.getChildren().add(gui);
@@ -91,7 +87,9 @@ public class Game extends Application{
 		            }
 					});
 		  root.getChildren().add(t);
-		  
+			//Thread th = new Thread(contractEngine);
+			Thread th = new Thread(contractEngine);
+			th.start();
 		  Scene s = new Scene(root);	
 
 		  stage.setScene(s);

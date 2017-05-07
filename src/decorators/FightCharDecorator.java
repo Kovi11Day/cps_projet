@@ -195,11 +195,6 @@ public class FightCharDecorator implements FightCharService{
 		return delegate.getTechMastered(i);
 	}
 
-	@Override
-	public void init(int l, int s, boolean f, EngineService e) {
-		
-		delegate.init(l, s, f, e);
-	}
 
 	@Override
 	public void startTech(Tech t) {

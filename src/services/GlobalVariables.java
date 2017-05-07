@@ -1,12 +1,13 @@
 package services;
 
 public class GlobalVariables {
-	public static int width;
-	public static int height;
-	public static int boxWidth = 20;
-	public static int boxHeight = 45;
+	//game area size
+	public static int arene_width = 40;
+	public static int arene_height = 125;
+	//character size
+	public static int boxWidth = 50;
+	public static int boxHeight = 160;
 
-	public static int nbPlayersMax = 2;
 	public static long frameTime = (long) 100; //milliseconds
 
 }

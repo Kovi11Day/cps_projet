@@ -64,20 +64,20 @@ public interface FightCharService extends CharacterService{
 	
 	//pre: l>0 && s>0
 	
-	//post: 
-	//getTechFrameCounter() = 0
-	//getBStunFrameCounter() =0
-	//getHStunFrameCounter() =0
-	//isTechHasAlreadyHit() = false
-	//isBlocking() = false
-	//getNbTechMastered = 0
+	//post: getTechFrameCounter() = 0
+	//post: getBStunFrameCounter() =0
+	//post: getHStunFrameCounter() =0
+	//post: isTechHasAlreadyHit() = false
+	//post: isBlocking() = false
+	//post: getNbTechMastered = 0
 	public void init(int l,int s,boolean f);
 	
 	/* Operators */
 	
 	
 	//pre:\exist i \in [1,getNbTechMastered()], getTechMastered(i) = t
-	//post:getTechBox().equals(t.getHitBox(getPositionX()@pre,getPositionY()@pre)
+	//post:getTechBox().equals(t.getHitBox(getPositionX()@pre,getPositionY()@pre, 
+				//getWidth()@pre, getHeight()@pre, getFaceRight()@pre)
 	//post:getTech() = t
 	//post:isTechhasAlreadyHit() = false
 	//post:getTechFrameCounter() = t.sframe()+t.hframe()+t.rframe()
@@ -130,7 +130,7 @@ public interface FightCharService extends CharacterService{
 	
 	
 	/*
-	 * pre: getOtherFightCharacter() != null
+	 * pre: getOtherFightChar() != null
 	 * post: (isTeching()@pre && isInHitFrame()@pre &&!isHasAlreadyHit()@pre && 
 	 * 				techBox()@pre.collidesWith(getOtherFightCharacter(C)@pre))
 	 * 		==>
@@ -147,8 +147,9 @@ public interface FightCharService extends CharacterService{
 	/*
 	 * post: getTechFrameCounter() = max (0, getTechFrameCounter()@pre - 1)
 	 * post: getBstunFrameCounter() = max (0, getBstunFrameCounter()@pre - 1)
-	 * post: getHstunFrameCounter() = max (0, getBstunFrameCounter()@pre - 1)
+	 * post: getHstunFrameCounter() = max (0, getHstunFrameCounter()@pre - 1)
 	 * post: !isBlockStunned()@pre ==> !isBlocking()
+	 * post: !isTeching() ==> !hasAlreadyHit()
 	 */
 	void updateFrames();
 	
@@ -160,7 +161,7 @@ public interface FightCharService extends CharacterService{
 	/*
 	 * pre: t.damage() >= 0 && t.hstun >= 0 && t.bstun >= 0 && t.sframe() >= 0 && t.hframe() >= 0 && t.rframe() >= 0
 	 * post: getNbTechMastered() == getNbTechMastered()@pre + 1
-	 * \exists i in [1, getNbTechMastered()] getTechMastered(i) == t
+	 * post: \exists i in [1, getNbTechMastered()] getTechMastered(i) == t
 	 */
 	void setNewTechMastered(Tech t);
 	

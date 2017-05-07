@@ -1,4 +1,4 @@
-package impl;
+package implbug;
 
 import services.CharacterService;
 import services.Commande;

@@ -19,8 +19,8 @@ public interface CharacterService {
 	//inv : getHeight() = getCharBox().getHeight()
 	//inv : getPositionX() = getCharBox().getPositionX()
 	//inv : getPositionY() = getCharBox().getPositionY()
-	//inv: getPositionX() >= 0 && getPositionX() <= getEngine().getWidth()
-	//inv: getPositionY() >= 0 && getPositionY() < getEngine().getHeight()
+	//inv: isReady() ==> (getPositionX() >= 0 && getPositionX() <= getEngine().getWidth())
+	//inv: isReady() ==> (getPositionY() >= 0 && getPositionY() < getEngine().getHeight())
 	//inv: isDead() = !(getLife() > 0)
 	
 	/* Initializers */

@@ -1,4 +1,4 @@
-package impl;
+package implbug;
 
 import java.util.ArrayList;
 
@@ -199,10 +199,6 @@ public class FightCharImpl  extends CharacterImpl implements FightCharService{
 		this.techFrameCounter = Math.max(0,this.techFrameCounter - 1);
 		this.bstunFrameCounter = Math.max(0,this.bstunFrameCounter - 1);
 		this.hstunFrameCounter = Math.max(0,this.hstunFrameCounter - 1);
-		if (!isBlockStunned())
-			isBlocking = false;
-		if(!isTeching())
-			this.techHasAlreadyHit = false;
 	}
 
 	@Override

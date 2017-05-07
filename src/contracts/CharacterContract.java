@@ -32,11 +32,11 @@ public class CharacterContract extends FightCharDecorator {
 			throw new InvariantError("CharacterContract: getPositionY() = getCharBox().getPositionY()");
 		
 		//inv: getPositionX() >= 0 && getPositionX() <= getEngine().getWidth()
-		if (getPositionX() < 0 || getPositionX() > getEngine().getWidth())
+		if (isReady() && (getPositionX() < 0 || getPositionX() > getEngine().getWidth()))
 			throw new InvariantError("CharacterContract: getPositionX() < 0 || getPositionX() > getEngine().getWidth()");
 		
 		//inv: getPositionY() >= 0 && getPositionY() < getEngine().getHeight()
-		if (getPositionY() < 0 || getPositionY() >= getEngine().getHeight())
+		if (isReady() && (getPositionY() < 0 || getPositionY() >= getEngine().getHeight()))
 			throw new InvariantError("CharacterContract: getPositionY() < 0 && getPositionY() >= getEngine().getHeight()");
 		
 		//inv: isDead() = !(getLife() > 0)

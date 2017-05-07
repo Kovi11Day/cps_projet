@@ -1,4 +1,4 @@
-package impl;
+package implbug;
 
 import services.GlobalVariables;
 import services.HitboxService;
